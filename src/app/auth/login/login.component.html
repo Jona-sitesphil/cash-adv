@@ -1,0 +1,59 @@
+<main class="login-group">
+  <!-- Top Logo & Text -->
+  <div class="header-section">
+    <img
+      src="assets/RecreatedFIGMAlogo.PNG"
+      alt="SitePhil Logo"
+      class="header-logo"
+    />
+    <h1 class="main-title">SITESPHIL</h1>
+    <p class="subtitle">COMPANY CASH ADVANCE SYSTEM</p>
+  </div>
+
+  <!-- Login Box -->
+  <div class="login-box">
+    <img src="assets/avatar.png" alt="Login Avatar" class="avatarlogin" />
+    <h2 class="login-text">LOGIN</h2>
+
+    <div class="input-group">
+      <img
+        src="assets/user.png"
+        alt="Username Icon"
+        class="input-icon"
+        aria-label="Username Icon"
+      />
+      <div class="divider"></div>
+      <input
+        type="text"
+        #usernameInput
+        [(ngModel)]="email"
+        placeholder="Username"
+        required
+      />
+    </div>
+
+    <div class="input-group">
+      <img
+        src="assets/padlock.png"
+        alt="Password Icon"
+        class="input-icon"
+        aria-label="Password Icon"
+      />
+      <div class="divider"></div>
+      <input
+        type="password"
+        #passwordInput
+        [(ngModel)]="password"
+        placeholder="Password"
+        required
+      />
+    </div>
+
+    <!-- Error Message (Angular) -->
+    <div *ngIf="errorMessage" class="error">
+      {{ errorMessage }}
+    </div>
+
+    <button (click)="login()">Login</button>
+  </div>
+</main>

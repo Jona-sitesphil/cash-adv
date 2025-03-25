@@ -1,0 +1,107 @@
+/* Dark backdrop */
+.modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+  }
+  
+  /* Modal container */
+  .modal-container {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #fff;
+    width: 400px; /* adjust as needed */
+    max-width: 90%;
+    max-height: 80vh;
+    overflow-y: auto; /* scroll if content is too tall */
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+  }
+  
+  /* Header */
+  .modal-header {
+    margin-bottom: 1rem;
+  }
+  .modal-header h2 {
+    margin-bottom: 0.5rem;
+  }
+  .modal-header p {
+    color: #555;
+    font-size: 0.9rem;
+  }
+  
+  /* Form fields */
+  .form-group {
+    margin-bottom: 1rem;
+  }
+  .form-group label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 0.25rem;
+  }
+  .form-group span,
+  .form-group input {
+    display: block;
+    width: 100%;
+    font-size: 0.95rem;
+    padding: 0.5rem;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  .form-group span {
+    /* If read-only text, remove border, or style differently */
+    border: none;
+    padding: 0;
+    background: transparent;
+  }
+  
+  /* Payment schedule */
+  .payment-schedule {
+    margin-top: 1rem;
+  }
+  .payment-schedule h3 {
+    margin-bottom: 0.5rem;
+  }
+  .payment-schedule ul {
+    list-style: none;
+    padding-left: 0;
+    margin-bottom: 0.5rem;
+  }
+  .payment-schedule li {
+    margin-bottom: 0.25rem;
+  }
+  
+  /* Footer buttons */
+  .modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 1.5rem;
+  }
+  .modal-footer button {
+    margin-left: 0.5rem;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  .cancel-button {
+    background: #ccc;
+    color: #333;
+  }
+  .confirm-button {
+    background: #003369;
+    color: #fff;
+  }
+  .confirm-button:hover {
+    background: #559deb;
+  }
+  

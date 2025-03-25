@@ -1,0 +1,61 @@
+<div class="modal-overlay">
+  <div class="modal">
+    <button class="close-btn" (click)="closeModal()">
+      <mat-icon>close</mat-icon>
+    </button>
+
+    <h3>Request Cash Advance</h3>
+    <p>Fill in the details below.</p>
+
+    <!-- Amount -->
+    <label>Amount</label>
+    <div class="input-group">
+      <span class="currency-symbol">₱</span>
+      <input type="number" [(ngModel)]="amount" placeholder="0.00" />
+    </div>
+
+    <!-- Reason -->
+    <label>Reason</label>
+    <textarea
+      [(ngModel)]="reason"
+      placeholder="Briefly explain the reason for this cash advance request"
+    ></textarea>
+
+    <!-- Dates Section -->
+    <div class="date-inputs">
+      <div>
+        <label>Date Needed</label>
+        <input type="date" [(ngModel)]="neededDate" />
+      </div>
+      <div>
+        <label>Months to Pay</label>
+        <input
+          type="number"
+          [(ngModel)]="monthsToPay"
+          (ngModelChange)="updatePaymentDates($event)"
+          min="0"
+        />
+      </div>
+    </div>
+
+    <!-- Dynamic Payment Date Inputs -->
+    <div *ngFor="let date of paymentDates; let i = index">
+      <label>Payment Date {{ i + 1 }}</label>
+      <input
+        type="date"
+        [ngModel]="paymentDates[i]"
+        (ngModelChange)="updatePaymentDate(i, $event)"
+      />
+    </div>
+
+    <!-- Actions -->
+    <div class="button-group">
+      <button class="cancel-btn" (click)="closeModal()">
+        <mat-icon>cancel</mat-icon> Cancel
+      </button>
+      <button class="submit-btn" (click)="submitRequest()">
+        <mat-icon>send</mat-icon> Submit
+      </button>
+    </div>
+  </div>
+</div>

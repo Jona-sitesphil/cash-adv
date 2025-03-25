@@ -1,0 +1,117 @@
+/* Reset & Base */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+  height: 100vh; /* So that our parent flex container can fill screen height */
+  /* Remove any extra padding/margins you previously had here */
+}
+
+/* Main container that centers content vertically & horizontally */
+.login-group {
+  display: flex;
+  flex-direction: column; /* Stack items vertically */
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Full viewport height */
+}
+
+/* Header section (logo & text) */
+.header-section {
+  text-align: center;
+  margin-bottom: 1rem; /* spacing above the login box */
+}
+.header-logo {
+  width: 80px;
+  height: auto;
+  display: block;
+  margin: 0 auto 0.5rem auto;
+}
+.main-title {
+  font-size: 2rem;
+  margin-bottom: 0.25rem;
+}
+.subtitle {
+  font-size: 1rem;
+  color: #555;
+}
+
+/* Login Box */
+.login-box {
+  background: #fff;
+  width: 350px; /* Adjust as desired */
+  padding: 2rem;
+  border-radius: 10px;
+  text-align: center;
+  box-shadow: 0 20px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Avatar & Login Text */
+.avatarlogin {
+  width: 60px;
+  height: auto;
+  margin-bottom: 1rem;
+}
+.login-text {
+  margin-bottom: 1rem;
+  font-size: 1.25rem;
+  font-weight: bold;
+}
+
+/* Input Groups */
+.input-group {
+  position: relative;
+  margin-top: 1rem;
+}
+.input-icon {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 20px;
+  z-index: 1;
+}
+.divider {
+  width: 2px;
+  height: 20px;
+  background-color: #555;
+  position: absolute;
+  left: 40px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1;
+}
+.input-group input {
+  width: 100%;
+  padding: 0.75rem 0.75rem 0.75rem 2.5rem; /* left padding to avoid icons */
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+  outline: none;
+}
+
+/* Error Message (if any) */
+.error {
+  color: red;
+  margin-top: 0.75rem;
+}
+
+/* Button */
+button {
+  width: 100%;
+  padding: 0.75rem;
+  background-color: #003369;
+  border: none;
+  color: white;
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 1.5rem;
+}
+button:hover {
+  background-color: #559deb;
+}

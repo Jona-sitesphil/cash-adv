@@ -1,0 +1,68 @@
+/* Fullscreen overlay */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5); /* Dark overlay */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+/* Modal Container */
+.modal {
+  background: #fff;
+  width: 600px;
+  max-width: 90%;
+  border-radius: 10px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+/* Fade-in animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* mat-card customizations */
+.payment-card {
+  padding: 0;
+}
+
+.title {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.table-container {
+  overflow-x: auto;
+  margin-top: 1rem;
+}
+
+.custom-table {
+  width: 100%;
+}
+
+/* Action buttons at the bottom */
+.action-buttons {
+  display: flex;
+  justify-content: flex-end;
+  padding: 1rem;
+}
+
+.close-button {
+  background: #e0e0e0;
+  font-weight: 600;
+  border-radius: 6px;
+  margin-right: 0.5rem;
+}

@@ -1,0 +1,39 @@
+<div class="requests-container">
+  <h2>My Requests</h2>
+  <p>View and track the status of your cash advance requests.</p>
+
+  <div class="header">
+    <!-- Only the New Request button is shown -->
+    <button class="new-request-btn" (click)="openEmployeeModal()">
+      <mat-icon>add</mat-icon> New Request
+    </button>
+  </div>
+
+  <div class="request-list">
+    <div class="request-item" *ngFor="let request of requests">
+      <div class="request-header">
+        <strong>{{ request.userName }}</strong>
+        <span class="status" [ngClass]="request.requestStatus.toLowerCase()">
+          {{ request.requestStatus }}
+        </span>
+      </div>
+      <p>{{ request.reason }}</p>
+      <small>
+        Amount: ₱{{ request.amount | number : "1.2-2" }} | Needed:
+        {{ request.neededDate | date : "mediumDate" }} | Requested:
+        {{ request.requestDate | date : "medium" }}
+      </small>
+      <button class="details-btn">
+        <mat-icon>visibility</mat-icon> Details
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Show Modal Only When isModalOpen is True -->
+<app-employee-modal
+  *ngIf="isModalOpen"
+  (closeModalEvent)="closeEmployeeModal()"
+  (submitRequestEvent)="addNewRequest($event)"
+>
+</app-employee-modal>

@@ -1,0 +1,44 @@
+<mat-toolbar class="navbar">
+  <button mat-icon-button (click)="sidenav.toggle()">
+    <mat-icon style="color: white">menu</mat-icon>
+  </button>
+  <span><strong>Cash Advance</strong></span>
+</mat-toolbar>
+
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav
+    #sidenav
+    [mode]="isMobile ? 'over' : 'side'"
+    [opened]="!isMobile"
+    class="sidenav"
+  >
+    <!-- Sidebar Logo -->
+    <div class="image-wrapper">
+      <div class="sidebar-logo">
+        <img
+          src="assets\RecreatedFIGMAlogo.PNG"
+          alt="Logo"
+          class="sidebar-logo"
+        />
+      </div>
+    </div>
+
+    <mat-nav-list class="sidenav-list">
+      <a mat-list-item routerLink="/employee/dashboard"
+        ><mat-icon>home</mat-icon> <strong>Dashboard</strong></a
+      >
+
+      <a mat-list-item (click)="onLogout()"
+        ><mat-icon>logout</mat-icon> <strong>Logout</strong></a
+      >
+    </mat-nav-list>
+  </mat-sidenav>
+
+  <mat-sidenav-content class="content">
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>
+
+<footer class="main-footer">
+  <p>Copyright &copy;2021 SITESPHIL. All Rights Reserved</p>
+</footer>

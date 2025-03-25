@@ -1,0 +1,66 @@
+<!-- Fullscreen overlay -->
+<div class="modal-overlay">
+  <div class="modal">
+    <mat-card class="payment-card">
+      <mat-card-title class="title">
+        Request Details for {{ employeeName }}
+      </mat-card-title>
+
+      <mat-card-content>
+        <div class="table-container">
+          <table
+            mat-table
+            [dataSource]="paymentSchedule"
+            class="mat-elevation-z8 custom-table"
+          >
+            <!-- Employee Column -->
+            <ng-container matColumnDef="userName">
+              <th mat-header-cell *matHeaderCellDef>Employee</th>
+              <td mat-cell *matCellDef="let element">{{ element.userName }}</td>
+            </ng-container>
+
+            <!-- Request Date Column -->
+            <ng-container matColumnDef="requestDate">
+              <th mat-header-cell *matHeaderCellDef>Request Date</th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.requestDate | date: 'medium' }}
+              </td>
+            </ng-container>
+
+            <!-- Date Needed Column -->
+            <ng-container matColumnDef="neededDate">
+              <th mat-header-cell *matHeaderCellDef>Date Needed</th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.neededDate | date: 'mediumDate' }}
+              </td>
+            </ng-container>
+
+            <!-- Amount Column -->
+            <ng-container matColumnDef="amount">
+              <th mat-header-cell *matHeaderCellDef>Amount</th>
+              <td mat-cell *matCellDef="let element">
+                <strong>₱{{ element.amount | number:'1.2-2' }}</strong>
+              </td>
+            </ng-container>
+
+            <!-- Purpose Column -->
+            <ng-container matColumnDef="reason">
+              <th mat-header-cell *matHeaderCellDef>Purpose</th>
+              <td mat-cell *matCellDef="let element">{{ element.reason }}</td>
+            </ng-container>
+
+            <!-- Table Row Definitions -->
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+          </table>
+        </div>
+      </mat-card-content>
+
+      <mat-card-actions class="action-buttons">
+        <button mat-button class="close-button" (click)="closeModal()">
+          Close
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+</div>

@@ -1,0 +1,74 @@
+<div class="wrapper" [ngClass]="{ 'sidebar-open': isSidebarOpen }">
+  <div class="filter-container">
+    <h2>Filter Requests</h2>
+    <div class="search-container">
+      <input
+        matInput
+        type="text"
+        placeholder="Search..."
+        class="search-input"
+      />
+    </div>
+    <div class="filter-options">
+      <div class="filter-item">
+        <label>Start Date</label>
+        <input type="date" [(ngModel)]="startDate" />
+      </div>
+      <div class="filter-item">
+        <label>End Date</label>
+        <input type="date" [(ngModel)]="endDate" />
+      </div>
+      <div class="filter-item">
+        <label>Status</label>
+        <select [(ngModel)]="selectedStatus">
+          <option value="">All Statuses</option>
+          <option value="Pending">Pending</option>
+          <option value="Approved">Approved</option>
+          <option value="Rejected">Rejected</option>
+        </select>
+      </div>
+      <button class="apply-filters">Apply Filters</button>
+    </div>
+  </div>
+
+  <!-- Stats Section -->
+  <div class="dashboard-container">
+    <div class="stats-container">
+      <!-- Optional Stats display -->
+    </div>
+  </div>
+
+  <!-- Table Section -->
+  <div class="parent-container">
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>Employee</th>
+            <th>Request Date</th>
+            <th>Date Needed</th>
+            <th>Amount</th>
+            <th>Status</th>
+            <th>Decision Date</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of requests; let i = index">
+            <td>{{ item.userId }}</td>
+            <td>{{ item.requestDate | date : "medium" }}</td>
+            <td>{{ item.neededDate | date : "mediumDate" }}</td>
+            <td>{{ item.amount | currency : "PHP" : "symbol" }}</td>
+            <td>{{ item.requestStatus }}</td>
+            <td>{{ item.updatedAt | date : "medium" }}</td>
+            <td>
+              <button class="btn" mat-button (click)="openHistoryView(item)">
+                View Details
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
