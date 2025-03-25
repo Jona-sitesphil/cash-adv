@@ -55,7 +55,7 @@
         </thead>
         <tbody>
           <tr *ngFor="let item of requests; let i = index">
-            <td>{{ item.userId }}</td>
+            <td>{{ item.userName }}</td>
             <td>{{ item.requestDate | date : "medium" }}</td>
             <td>{{ item.neededDate | date : "mediumDate" }}</td>
             <td>{{ item.amount | currency : "PHP" : "symbol" }}</td>

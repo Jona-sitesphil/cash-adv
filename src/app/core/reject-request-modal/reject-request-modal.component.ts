@@ -1,39 +1,45 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatButtonModule } from '@angular/material/button';
+import { FeaturesService } from '../../features/features.service';
 
 @Component({
   selector: 'app-reject-request-modal',
-  standalone: true,
-  imports: [
-    CommonModule,
-    FormsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatButtonModule,
-  ],
   templateUrl: './reject-request-modal.component.html',
   styleUrls: ['./reject-request-modal.component.css'],
+  standalone: true,
+  imports: [MatFormFieldModule, FormsModule],
 })
 export class RejectRequestModalComponent {
-  @Input() data!: { employee: string; amount: number };
+  @Input() paymentSchedule: any;
   @Output() modalClosed = new EventEmitter<void>();
   @Output() rejectionConfirmed = new EventEmitter<string>();
 
   rejectionReason: string = '';
 
-  closeModal(): void {
+  // Inject FeaturesService using Angular's inject() method (suitable for standalone components)
+  private featuresService = inject(FeaturesService);
+
+  closeModal() {
     this.modalClosed.emit();
   }
 
-  confirmRejection(): void {
-    console.log(
-      `Rejected ${this.data.employee} - Reason: ${this.rejectionReason}`
-    );
-    this.rejectionConfirmed.emit(this.rejectionReason);
-    this.closeModal();
+  confirmRejection() {
+    if (this.rejectionReason.trim()) {
+      // Call the API via FeaturesService.
+      // Here, we assume that the request identifier is in paymentSchedule.id.
+      this.featuresService
+        .rejectRequest(this.paymentSchedule.id, this.rejectionReason)
+        .subscribe({
+          next: (response: any) => {
+            console.log('Rejection successful:', response);
+            this.rejectionConfirmed.emit(this.rejectionReason);
+            this.closeModal();
+          },
+          error: (error: any) => {
+            console.error('Rejection failed:', error);
+          },
+        });
+    }
   }
 }

@@ -6,28 +6,22 @@ import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-payment-schedule',
   standalone: true,
-  imports: [MatTableModule, MatCardModule,CommonModule],
+  imports: [MatTableModule, MatCardModule, CommonModule],
   templateUrl: './payment-schedule.component.html',
-  styleUrls: ['./payment-schedule.component.css']
+  styleUrls: ['./payment-schedule.component.css'],
 })
 export class PaymentScheduleComponent {
-  // The array of row(s) we want to display
-  @Input() paymentSchedule: any[] = [];
-  // Name of the employee, shown in the title
+  @Input() paymentSchedule: any = {};
   @Input() employeeName: string = '';
 
-  // Emit this event so the parent can hide this modal
   @Output() closeModalEvent = new EventEmitter<void>();
-
-  // Columns to display (matching the main table)
   displayedColumns: string[] = [
     'userName',
     'requestDate',
     'neededDate',
     'amount',
-    'reason'
+    'reason',
   ];
-
   closeModal(): void {
     this.closeModalEvent.emit();
   }

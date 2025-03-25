@@ -1,5 +1,6 @@
 <div class="wrapper" [ngClass]="{ 'sidebar-open': isSidebarOpen }">
-  <!-- If you need the dashboard stats section, uncomment these lines:
+  <!-- Optional Dashboard Stats Section -->
+  <!--
   <div class="dashboard-container">
     <div class="stats-container">
       <div class="stats-box" *ngFor="let data of jonadata">
@@ -26,29 +27,29 @@
         <tbody>
           <tr *ngFor="let item of requests">
             <td>{{ item.userName }}</td>
-            <td>{{ item.requestDate | date: 'medium' }}</td>
-            <td>{{ item.neededDate | date: 'mediumDate' }}</td>
-            <td>{{ item.amount | currency:'PHP':'symbol' }}</td>
+            <td>{{ item.requestDate | date : "medium" }}</td>
+            <td>{{ item.neededDate | date : "mediumDate" }}</td>
+            <td>{{ item.amount | currency : "PHP" : "symbol" }}</td>
             <td>{{ item.reason }}</td>
             <td>
               <button
                 class="btn-approve"
                 mat-button
-                (click)="openApproveModal(item.userName, item.amount)"
+                (click)="openApproveModal(item)"
               >
-                Approve
+                Review
               </button>
               <button
                 class="btn-reject"
                 mat-button
-                (click)="openRejectModal(item.userName, item.amount)"
+                (click)="openRejectModal(item)"
               >
                 Reject
               </button>
               <button
                 class="btn-details"
                 mat-button
-                (click)="openViewDetailsModal(item.userName)"
+                (click)="openViewDetailsModal(item)"
               >
                 View Details
               </button>
@@ -56,17 +57,27 @@
           </tr>
         </tbody>
       </table>
+
+      <!-- Pagination Controls Positioned at the Lower Right -->
+      <div class="pagination-controls">
+        <button mat-button (click)="prevPage()" [disabled]="pageIndex === 0">
+          Previous
+        </button>
+        <span>Page {{ pageIndex + 1 }} of {{ totalPages() }}</span>
+        <button
+          mat-button
+          (click)="nextPage()"
+          [disabled]="pageIndex >= totalPages() - 1"
+        >
+          Next
+        </button>
+      </div>
     </div>
 
     <!-- Approve Modal -->
     <app-approve-modal
       *ngIf="isApproveModalOpen"
       [showModal]="isApproveModalOpen"
-      [employeeName]="selectedEmployee"
-      [amountRequested]="selectedAmount"
-      [deductionStartDate]="deductionStartDate"
-      [monthlyDeductionAmount]="monthlyDeductionAmount"
-      [numberOfInstallments]="numberOfInstallments"
       [paymentSchedule]="selectedPaymentSchedule"
       (modalClosed)="closeApproveModal()"
       (approvalConfirmed)="handleApproval()"
@@ -75,7 +86,7 @@
     <!-- Reject Modal -->
     <app-reject-request-modal
       *ngIf="isRejectModalOpen"
-      [data]="{ employee: selectedEmployee, amount: selectedAmount }"
+      [paymentSchedule]="selectedPaymentSchedule"
       (modalClosed)="closeRejectModal()"
       (rejectionConfirmed)="handleRejection($event)"
     ></app-reject-request-modal>
@@ -83,7 +94,6 @@
     <!-- Payment Schedule Modal -->
     <app-payment-schedule
       *ngIf="isViewDetailsModalOpen"
-      [employeeName]="selectedEmployee"
       [paymentSchedule]="selectedPaymentSchedule"
       (closeModalEvent)="closeViewDetailsModal()"
     ></app-payment-schedule>

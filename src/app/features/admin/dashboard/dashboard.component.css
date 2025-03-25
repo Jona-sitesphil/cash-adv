@@ -128,3 +128,19 @@ tr:hover {
   flex-direction: column;
   margin: 5px auto 5px 0;
 }
+/* Style for the pagination controls positioned at the lower right */
+.pagination-controls {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-top: 10px;
+}
+
+/* Optionally, you can adjust spacing and font styling */
+.pagination-controls button {
+  margin-left: 5px;
+}
+.pagination-controls span {
+  margin: 0 10px;
+  font-size: 14px;
+}

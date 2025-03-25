@@ -8,20 +8,20 @@
 
   <div class="form-group">
     <label>Employee:</label>
-    <span>{{ employeeName }}</span>
+    <span>{{ paymentSchedule.userName }}</span>
   </div>
 
   <div class="form-group">
     <label>Amount Requested:</label>
-    <span>{{ amountRequested | currency : "PHP" : "symbol" }}</span>
+    <span>{{ paymentSchedule.amount | currency : "PHP" : "symbol" }}</span>
   </div>
 
   <div class="form-group">
-    <label>Deduction Start Date:</label>
+    <label>Date of Release:</label>
     <input type="date" [(ngModel)]="deductionStartDate" />
   </div>
 
-  <div class="form-group">
+  <!-- <div class="form-group">
     <label>Monthly Deduction Amount: </label>
     <input type="number" [(ngModel)]="monthlyDeductionAmount" />
   </div>
@@ -29,14 +29,15 @@
   <div class="form-group">
     <label>Number of Installments:</label>
     <input type="number" [(ngModel)]="numberOfInstallments" />
-  </div>
+  </div> -->
 
   <div class="payment-schedule">
     <h3>Payment Schedule</h3>
     <ul>
-      <li *ngFor="let installment of paymentSchedule">
-        {{ installment.date }} -
+      <li *ngFor="let installment of paymentSchedule.paymentSchedule">
+        {{ installment.paymentDate | date : "mediumDate" }} -
         {{ installment.amount | currency : "PHP" : "symbol" }}
+        ({{ installment.paymentStatus }})
       </li>
     </ul>
   </div>

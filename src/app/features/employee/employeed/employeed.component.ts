@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatIcon } from '@angular/material/icon';
 import { EmployeeModalComponent } from '../../../core/employee-modal/employee-modal.component';
@@ -10,72 +10,52 @@ import { FeaturesService } from '../../features.service';
   templateUrl: './employeed.component.html',
   styleUrls: ['./employeed.component.css'],
   imports: [FormsModule, CommonModule, MatIcon, EmployeeModalComponent],
+  standalone: true,
 })
-export class EmployeedComponent {
+export class EmployeedComponent implements OnInit {
   isModalOpen = false;
-  requests: any[] = []; // Declare the requests property
+  requests: any[] = [];
+
   constructor(private featuresService: FeaturesService) {}
-
-  // requests = [
-  //   {
-  //     id: 'kc',
-  //     description: 'Travel expenses for client meeting',
-  //     amount: 1500.0,
-  //     dateNeeded: 'Jun 15, 2023',
-  //     requestedDate: 'Jun 1, 2023',
-  //     status: 'Approved',
-  //   },
-  //   {
-  //     id: 'kimcarl',
-  //     description: 'Office supplies purchase',
-  //     amount: 500.0,
-  //     dateNeeded: 'Jul 5, 2023',
-  //     requestedDate: 'Jul 1, 2023',
-  //     status: 'Pending',
-  //   },
-  // ];
-
-  // filteredRequests = [...this.requests];
-
-  // filterRequests(status: string) {
-  //   this.filteredRequests =
-  //     status === 'all'
-  //       ? [...this.requests]
-  //       : this.requests.filter((req) => req.status.toLowerCase() === status);
-  // }
 
   ngOnInit(): void {
     this.loadRequests();
   }
 
-  openEmployeeModal() {
+  // Open the New Request modal
+  openEmployeeModal(): void {
     this.isModalOpen = true;
     console.log('Opening modal...');
   }
 
-  closeEmployeeModal() {
+  // Close the New Request modal
+  closeEmployeeModal(): void {
     this.isModalOpen = false;
   }
 
-  addNewRequest(event: { refresh: boolean, newRequest: any }): void {
+  // When a new request is submitted
+  // If event.refresh is true, force a full page reload after a small delay
+  addNewRequest(event: { refresh: boolean; newRequest: any }): void {
     if (event.refresh) {
-      // Refresh the entire list from the backend.
-      this.loadRequests();
+      // Force a full reload so the page immediately reflects the new changes
+      setTimeout(() => {
+        window.location.reload();
+      }, 500); // 500ms delay for smooth UI transition
     } else {
-      // Optionally, if you want to just append:
+      // Alternatively, append the new request without a full reload
       this.requests.push(event.newRequest);
     }
     this.closeEmployeeModal();
   }
-  
+
+  // Load self requests from the backend
   loadRequests(): void {
     this.featuresService.getSelfRequests().subscribe({
       next: (response: any) => {
-        // Assuming the API returns the data in response.data.cashAdvanceRequests
+        // Assuming the API returns data in response.data.cashAdvanceRequests
         this.requests = response.data.cashAdvanceRequests;
-        // this.filteredRequests = [...this.requests];
       },
-      error: (err) => console.error('Error loading requests:', err),
+      error: (err: any) => console.error('Error loading requests:', err),
     });
   }
 }

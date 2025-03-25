@@ -3,9 +3,13 @@
   <p>View and track the status of your cash advance requests.</p>
 
   <div class="header">
-    <!-- Only the New Request button is shown -->
+    <!-- New Request Button -->
     <button class="new-request-btn" (click)="openEmployeeModal()">
       <mat-icon>add</mat-icon> New Request
+    </button>
+    <!-- Optional Refresh Button (if you want manual refresh without full reload) -->
+    <button class="refresh-btn" (click)="loadRequests()">
+      <mat-icon>refresh</mat-icon> Refresh
     </button>
   </div>
 
@@ -30,7 +34,7 @@
   </div>
 </div>
 
-<!-- Show Modal Only When isModalOpen is True -->
+<!-- Employee Modal for Creating a New Request -->
 <app-employee-modal
   *ngIf="isModalOpen"
   (closeModalEvent)="closeEmployeeModal()"

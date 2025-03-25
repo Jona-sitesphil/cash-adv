@@ -26,7 +26,6 @@ export class FeaturesService {
 
   login(email: string, password: string): Observable<any> {
     const url = `${this.baseUrl}/api/Auth/Login`;
-    console.log('Login API URL:', url);
     const body = { email, password };
 
     return this.http.post<any>(url, body).pipe(
@@ -62,20 +61,20 @@ export class FeaturesService {
     });
   }
 
-  // getDashboardStats(): Observable<any> {
-  //   return this.http
-  //     .get(`${this.baseUrl}/api/Dashboard/Stats`, {
-  //       headers: this.getHeaders(),
-  //     })
-  //     .pipe(retry(3), catchError(this.handleError));
-  // }
-
-  // READ all requests
-  getRequests(): Observable<any[]> {
+  // GET all requests with pagination.
+  // The API is assumed to return an object with:
+  // - data.cashAdvanceRequests: the current page’s items.
+  // - data.totalCount: total number of records.
+  // - data.totalPages: total pages.
+  // - data.currentPage: the current (1-based) page.
+  getRequestsPaginated(page: number, pageSize: number): Observable<any> {
     return this.http
-      .get<any[]>(`${this.baseUrl}/api/CashAdvanceRequest`, {
-        headers: this.getHeaders(),
-      })
+      .get<any>(
+        `${this.baseUrl}/api/CashAdvanceRequest?page=${page}&pageSize=${pageSize}`,
+        {
+          headers: this.getHeaders(),
+        }
+      )
       .pipe(retry(3), catchError(this.handleError));
   }
 
@@ -101,7 +100,6 @@ export class FeaturesService {
       .pipe(retry(3), catchError(this.handleError));
   }
 
-  // CREATE a new request
   createRequest(requestData: any): Observable<any> {
     return this.http
       .post(`${this.baseUrl}/api/Cashadvancerequest`, requestData, {
@@ -110,7 +108,6 @@ export class FeaturesService {
       .pipe(catchError(this.handleError));
   }
 
-  // UPDATE an existing request
   updateRequest(id: number, requestData: any): Observable<any> {
     return this.http
       .put(`${this.baseUrl}/api/Requests/${id}`, requestData, {
@@ -119,7 +116,6 @@ export class FeaturesService {
       .pipe(catchError(this.handleError));
   }
 
-  // DELETE a request
   deleteRequest(id: number): Observable<any> {
     return this.http
       .delete(`${this.baseUrl}/api/Requests/${id}`, {
@@ -128,19 +124,21 @@ export class FeaturesService {
       .pipe(catchError(this.handleError));
   }
 
-  approveRequest(employee: string, approvalData: any): Observable<any> {
+  approveRequest(id: number, approvalData: any): Observable<any> {
     return this.http
-      .post(`${this.baseUrl}/api/Requests/Approve/${employee}`, approvalData, {
-        headers: this.getHeaders(),
-      })
+      .put(
+        `${this.baseUrl}/api/CashAdvanceRequest/Approve/${id}`,
+        approvalData,
+        { headers: this.getHeaders() }
+      )
       .pipe(catchError(this.handleError));
   }
 
-  rejectRequest(employee: string, rejectionReason: string): Observable<any> {
+  rejectRequest(id: number, rejectionReason: string): Observable<any> {
     return this.http
-      .post(
-        `${this.baseUrl}/api/Requests/Reject/${employee}`,
-        { reason: rejectionReason },
+      .put(
+        `${this.baseUrl}/api/CashAdvanceRequest/Reject/${id}`,
+        { rejectionReason },
         { headers: this.getHeaders() }
       )
       .pipe(catchError(this.handleError));

@@ -1,68 +1,181 @@
 /* Fullscreen overlay */
 .modal-overlay {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: rgba(0, 0, 0, 0.5); /* Dark overlay */
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6); /* Dark overlay */
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 9999;
+  z-index: 50;
 }
 
 /* Modal Container */
 .modal {
-  background: #fff;
-  width: 600px;
-  max-width: 90%;
-  border-radius: 10px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  background: white;
+  width: 90%;
+  max-width: 650px;
+  max-height: 85vh; /* Prevent modal from exceeding viewport height */
+  border-radius: 12px;
+  box-shadow: 0px 12px 32px rgba(0, 0, 0, 0.2);
   animation: fadeIn 0.3s ease-in-out;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden; /* Prevent modal from growing beyond limits */
+}
+
+/* Scrollable content */
+::ng-deep .mat-mdc-card-content {
+  flex-grow: 1;
+  overflow-y: auto; /* Enables scrolling */
+  max-height: 60vh; /* Ensures content does not exceed modal height */
+  padding: 1rem;
 }
 
 /* Fade-in animation */
 @keyframes fadeIn {
   from {
     opacity: 0;
-    transform: translateY(-15px);
+    transform: scale(0.95);
   }
   to {
     opacity: 1;
-    transform: translateY(0);
+    transform: scale(1);
   }
 }
 
-/* mat-card customizations */
+/* Card Container */
 .payment-card {
-  padding: 0;
-}
-
-.title {
-  font-size: 18px;
-  font-weight: 600;
-}
-
-.table-container {
-  overflow-x: auto;
-  margin-top: 1rem;
-}
-
-.custom-table {
+  display: flex;
+  flex-direction: column;
   width: 100%;
 }
 
-/* Action buttons at the bottom */
+/* Title */
+.title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  padding: 1.25rem;
+  background: #f8f9fa;
+  border-bottom: 1px solid #e0e0e0;
+  text-align: center;
+  color: #1e293b; /* Dark blue-gray */
+}
+
+/* Table container */
+.table-container {
+  flex-grow: 1;
+  overflow-y: auto;
+  max-height: 400px; /* Scrollable content */
+  padding: 1rem;
+}
+
+/* Custom table styling */
+.details-table,
+.custom-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+  color: #475569; /* Slightly muted gray */
+}
+
+/* Table Header */
+.details-table th,
+.custom-table th {
+  padding: 0.75rem;
+  font-weight: 600;
+  text-align: left;
+  background: #f1f5f9;
+  border-bottom: 2px solid #e2e8f0;
+}
+
+/* Table Cells */
+.details-table td,
+.custom-table td {
+  padding: 0.75rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+/* Make table headers sticky */
+.custom-table th {
+  position: sticky;
+  top: 0;
+  background: #f8fafc;
+  z-index: 2;
+}
+
+/* Payment Schedule Table */
+.custom-table tr:nth-child(odd) {
+  background-color: #f9fafb;
+}
+
+/* Buttons */
 .action-buttons {
   display: flex;
   justify-content: flex-end;
   padding: 1rem;
+  background: #f8f9fa;
+  border-top: 1px solid #e5e7eb;
 }
 
 .close-button {
-  background: #e0e0e0;
+  background: #1e293b;
+  color: white;
+  font-weight: 500;
+  border-radius: 8px;
+  padding: 0.6rem 1.2rem;
+  transition: background 0.2s ease-in-out;
+  cursor: pointer;
+  border: none;
+}
+
+.close-button:hover {
+  background: #334155;
+}
+
+/* Payment Schedule Table */
+.table-container h3 {
+  font-size: 1.1rem;
   font-weight: 600;
-  border-radius: 6px;
-  margin-right: 0.5rem;
+  margin-bottom: 0.75rem;
+  color: #1e293b; /* Dark blue-gray */
+}
+
+/* Custom Table Styling */
+.custom-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+  color: #475569; /* Slightly muted gray */
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.08);
+}
+
+/* Table Header */
+.custom-table th {
+  padding: 0.75rem;
+  font-weight: 600;
+  text-align: left;
+  background: #f1f5f9;
+  border-bottom: 2px solid #e2e8f0;
+}
+
+/* Table Cells */
+.custom-table td {
+  padding: 0.75rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+/* Alternate Row Background */
+.custom-table tr:nth-child(odd) {
+  background-color: #f9fafb;
+}
+
+/* Sticky Table Headers */
+.custom-table th {
+  position: sticky;
+  top: 0;
+  background: #f8fafc;
+  z-index: 2;
 }

@@ -4,11 +4,11 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { MatButtonModule } from '@angular/material/button';
 import { FormsModule } from '@angular/forms';
-import { MatDialog, MatDialogModule } from '@angular/material/dialog'; // <-- Import MatDialog
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { FeaturesService } from './../../features.service';
 import { ApproveModalComponent } from '../../../core/approve-modal/approve-modal.component';
 import { RejectRequestModalComponent } from '../../../core/reject-request-modal/reject-request-modal.component';
-import { PaymentScheduleComponent } from '../../../core/payment-schedule/payment-schedule.component'; // <-- PaymentSchedule
+import { PaymentScheduleComponent } from '../../../core/payment-schedule/payment-schedule.component';
 
 @Component({
   selector: 'app-dashboard',
@@ -21,24 +21,17 @@ import { PaymentScheduleComponent } from '../../../core/payment-schedule/payment
     FormsModule,
     MatDialogModule,
     ApproveModalComponent,
-    RejectRequestModalComponent,
     PaymentScheduleComponent,
+    RejectRequestModalComponent,
   ],
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css'],
 })
 export class DashboardComponent implements OnInit {
   requests: any[] = [];
+  totalCount: number = 0; // Total number of records returned from API
+  totalPagesValue: number = 0; // Total pages from API
   dashboardStats: any = {};
-
-  paymentSchedule = [
-    { employee: 'Jons', date: 'April 1, 2025', amount: 500 },
-    { employee: 'Pogs', date: 'May 1, 2025', amount: 500 },
-    { employee: 'Jons', date: 'June 1, 2025', amount: 500 },
-    { employee: 'Pogs', date: 'December 1, 2025', amount: 500 },
-    { employee: 'Pogs', date: 'May 1, 2025', amount: 500 },
-    { employee: 'Pogs', date: 'June 1, 2025', amount: 500 },
-  ];
 
   jonadata: any[] = [
     { label: 'Total Request', count: 7 },
@@ -50,79 +43,92 @@ export class DashboardComponent implements OnInit {
   isApproveModalOpen: boolean = false;
   isRejectModalOpen: boolean = false;
   isViewDetailsModalOpen: boolean = false;
-  selectedEmployee: string = '';
-  selectedAmount: number = 0;
-  selectedPaymentSchedule: any[] = [];
-  deductionStartDate: string = '2025-04-01';
-  monthlyDeductionAmount: number = 500;
-  numberOfInstallments: number = 6;
+  selectedPaymentSchedule: any = {};
 
-  selectedNeededDate: string = '';
-  selectedReason: string = '';
+  // Pagination settings
+  pageIndex: number = 0; // Local 0-based page index
+  pageSize: number = 10; // 10 rows per page
 
   constructor(
     private featuresService: FeaturesService,
-    private dialog: MatDialog // <-- Inject MatDialog
+    private dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
     this.loadRequests();
   }
 
-  loadRequests(): void {
-    this.featuresService.getRequests().subscribe({
-      next: (response: any) => {
-        // Assuming response.data.cashAdvanceRequests holds the array of requests.
-        this.requests = response.data.cashAdvanceRequests;
-      },
-      error: (err: any) => console.error('Failed to load requests', err),
-    });
+  // Loads the paginated requests from the backend.
+  // The API is expected to use 1-based page numbering.
+  loadRequests(page: number = this.pageIndex): void {
+    // Call the API with (pageIndex + 1) because the API expects 1-based pages.
+    this.featuresService
+      .getRequestsPaginated(page + 1, this.pageSize)
+      .subscribe({
+        next: (response: any) => {
+          // Assuming the API returns:
+          //   data.cashAdvanceRequests: the items on the current page,
+          //   data.totalRecords: total number of records,
+          //   data.totalPages: total pages,
+          //   data.currentPage: the current page (1-based)
+          this.requests = response.data.cashAdvanceRequests;
+          this.totalCount = response.data.totalRecords;
+          this.totalPagesValue = response.data.totalPages;
+          this.pageIndex = response.data.currentPage - 1;
+        },
+        error: (err: any) => console.error('Failed to load requests', err),
+      });
   }
 
-  openApproveModal(employee: string, amount: number): void {
-    this.selectedEmployee = employee;
-    this.selectedAmount = amount;
-    this.selectedPaymentSchedule = this.paymentSchedule.filter(
-      (item) => item.employee === employee
-    );
+  // Returns the total number of pages.
+  totalPages(): number {
+    return this.totalPagesValue;
+  }
+
+  nextPage(): void {
+    if (this.pageIndex < this.totalPages() - 1) {
+      this.loadRequests(this.pageIndex + 1);
+    }
+  }
+
+  prevPage(): void {
+    if (this.pageIndex > 0) {
+      this.loadRequests(this.pageIndex - 1);
+    }
+  }
+
+  openApproveModal(request: any): void {
+    this.selectedPaymentSchedule = request;
+    console.log('Approve modal data:', this.selectedPaymentSchedule);
     this.isApproveModalOpen = true;
   }
-
   closeApproveModal(): void {
     this.isApproveModalOpen = false;
   }
-
   handleApproval(): void {
-    console.log(
-      `Approval confirmed for ${this.selectedEmployee} - Amount: ${this.selectedAmount}`
-    );
     this.closeApproveModal();
+    this.loadRequests();
   }
 
-  openRejectModal(employee: string, amount: number): void {
-    this.selectedEmployee = employee;
-    this.selectedAmount = amount;
+  openRejectModal(request: any): void {
+    this.selectedPaymentSchedule = request;
+    console.log('Reject modal data:', this.selectedPaymentSchedule);
     this.isRejectModalOpen = true;
   }
-
   closeRejectModal(): void {
     this.isRejectModalOpen = false;
   }
-
   handleRejection(reason: string): void {
-    console.log(
-      `Request rejected for ${this.selectedEmployee} - Reason: ${reason}`
-    );
+    console.log('Request rejected for reason:', reason);
     this.closeRejectModal();
+    this.loadRequests();
   }
 
-  openViewDetailsModal(item: any): void {
-    this.selectedPaymentSchedule = [item];
-    this.selectedEmployee = item.userName;
+  openViewDetailsModal(request: any): void {
+    this.selectedPaymentSchedule = request;
+    console.log('View Details modal data:', this.selectedPaymentSchedule);
     this.isViewDetailsModalOpen = true;
   }
-
-  // You can remove these if not needed
   closeViewDetailsModal(): void {
     this.isViewDetailsModalOpen = false;
   }
