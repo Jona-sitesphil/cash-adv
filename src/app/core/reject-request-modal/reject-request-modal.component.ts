@@ -33,6 +33,8 @@ export class RejectRequestModalComponent {
         .subscribe({
           next: (response: any) => {
             console.log('Rejection successful:', response);
+            alert('Rejection successful');
+
             this.rejectionConfirmed.emit(this.rejectionReason);
             this.closeModal();
           },

@@ -3,13 +3,8 @@
   <p>View and track the status of your cash advance requests.</p>
 
   <div class="header">
-    <!-- New Request Button -->
     <button class="new-request-btn" (click)="openEmployeeModal()">
       <mat-icon>add</mat-icon> New Request
-    </button>
-    <!-- Optional Refresh Button (if you want manual refresh without full reload) -->
-    <button class="refresh-btn" (click)="loadRequests()">
-      <mat-icon>refresh</mat-icon> Refresh
     </button>
   </div>
 
@@ -27,17 +22,19 @@
         {{ request.neededDate | date : "mediumDate" }} | Requested:
         {{ request.requestDate | date : "medium" }}
       </small>
-      <button class="details-btn">
+      <button class="details-btn" (click)="openDetailsempModal(request)">
         <mat-icon>visibility</mat-icon> Details
       </button>
     </div>
   </div>
 </div>
 
-<!-- Employee Modal for Creating a New Request -->
+
 <app-employee-modal
-  *ngIf="isModalOpen"
+  *ngIf="isEmployeeModalOpen"
   (closeModalEvent)="closeEmployeeModal()"
   (submitRequestEvent)="addNewRequest($event)"
 >
 </app-employee-modal>
+
+

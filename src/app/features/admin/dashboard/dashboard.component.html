@@ -21,6 +21,7 @@
             <th>Date Needed</th>
             <th>Amount</th>
             <th>Purpose</th>
+            <th>Status</th>
             <th>Actions</th>
           </tr>
         </thead>
@@ -31,18 +32,22 @@
             <td>{{ item.neededDate | date : "mediumDate" }}</td>
             <td>{{ item.amount | currency : "PHP" : "symbol" }}</td>
             <td>{{ item.reason }}</td>
+            <td>{{ item.requestStatus }}</td>
+
             <td>
               <button
                 class="btn-approve"
                 mat-button
                 (click)="openApproveModal(item)"
+                *ngIf="item.requestStatus === 'Pending'"
               >
-                Review
+                Approve
               </button>
               <button
                 class="btn-reject"
                 mat-button
                 (click)="openRejectModal(item)"
+                *ngIf="item.requestStatus === 'Pending'"
               >
                 Reject
               </button>

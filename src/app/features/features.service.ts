@@ -12,7 +12,7 @@ import { Router } from '@angular/router';
   providedIn: 'root',
 })
 export class FeaturesService {
-  private baseUrl = 'http://10.0.0.9:5249';
+  private baseUrl = 'http://10.0.0.10:5249';
 
   constructor(private http: HttpClient, private router: Router) {}
 
@@ -75,6 +75,14 @@ export class FeaturesService {
           headers: this.getHeaders(),
         }
       )
+      .pipe(retry(3), catchError(this.handleError));
+  }
+
+  getRequests(): Observable<any> {
+    return this.http
+      .get<any>(`${this.baseUrl}/api/CashAdvanceRequest`, {
+        headers: this.getHeaders(),
+      })
       .pipe(retry(3), catchError(this.handleError));
   }
 
@@ -144,11 +152,20 @@ export class FeaturesService {
       .pipe(catchError(this.handleError));
   }
 
-  getPaymentSchedule(employee: string): Observable<any> {
+  // getPaymentSchedule(employee: string): Observable<any> {
+  //   return this.http
+  //     .get(`${this.baseUrl}/api/Payments/Schedule/${employee}`, {
+  //       headers: this.getHeaders(),
+  //     })
+  //     .pipe(catchError(this.handleError));
+  // }
+  updatePaymentStatus(id: number, status: number): Observable<any> {
     return this.http
-      .get(`${this.baseUrl}/api/Payments/Schedule/${employee}`, {
-        headers: this.getHeaders(),
-      })
+      .put(
+        `${this.baseUrl}/api/CashAdvanceRequest/Update-Status/${id}`,
+        { status },
+        { headers: this.getHeaders() }
+      )
       .pipe(catchError(this.handleError));
   }
 

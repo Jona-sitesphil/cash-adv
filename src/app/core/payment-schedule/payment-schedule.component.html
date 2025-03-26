@@ -1,4 +1,3 @@
-<!-- Fullscreen overlay -->
 <div class="modal-overlay">
   <div class="modal">
     <mat-card class="payment-card">
@@ -7,41 +6,42 @@
       </mat-card-title>
 
       <mat-card-content>
-        <!-- General Request Details -->
         <div class="table-container">
           <table class="details-table">
-            <tr>
-              <th>Employee</th>
-              <td>{{ paymentSchedule?.userName }}</td>
-            </tr>
-            <tr>
-              <th>Request Date</th>
-              <td>{{ paymentSchedule?.requestDate | date : "medium" }}</td>
-            </tr>
-            <tr>
-              <th>Date Needed</th>
-              <td>{{ paymentSchedule?.neededDate | date : "mediumDate" }}</td>
-            </tr>
-            <tr>
-              <th>Amount</th>
-              <td>
-                <strong
-                  >₱{{ paymentSchedule?.amount | number : "1.2-2" }}</strong
-                >
-              </td>
-            </tr>
-            <tr>
-              <th>Months to Pay</th>
-              <td>{{ paymentSchedule?.monthsToPay }}</td>
-            </tr>
-            <tr>
-              <th>Purpose</th>
-              <td>{{ paymentSchedule?.reason }}</td>
-            </tr>
-            <tr>
-              <th>Request Status</th>
-              <td>{{ paymentSchedule?.requestStatus }}</td>
-            </tr>
+            <tbody>
+              <tr>
+                <th>Employee</th>
+                <td>{{ paymentSchedule?.userName }}</td>
+              </tr>
+              <tr>
+                <th>Request Date</th>
+                <td>{{ paymentSchedule?.requestDate | date : "medium" }}</td>
+              </tr>
+              <tr>
+                <th>Date Needed</th>
+                <td>{{ paymentSchedule?.neededDate | date : "mediumDate" }}</td>
+              </tr>
+              <tr>
+                <th>Amount</th>
+                <td>
+                  <strong
+                    >₱{{ paymentSchedule?.amount | number : "1.2-2" }}</strong
+                  >
+                </td>
+              </tr>
+              <tr>
+                <th>Months to Pay</th>
+                <td>{{ paymentSchedule?.monthsToPay }}</td>
+              </tr>
+              <tr>
+                <th>Purpose</th>
+                <td>{{ paymentSchedule?.reason }}</td>
+              </tr>
+              <tr>
+                <th>Request Status</th>
+                <td>{{ paymentSchedule?.requestStatus }}</td>
+              </tr>
+            </tbody>
           </table>
         </div>
 
@@ -57,10 +57,27 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let payment of paymentSchedule?.paymentSchedule">
+              <tr
+                *ngFor="
+                  let payment of paymentSchedule?.paymentSchedule;
+                  trackBy: trackById
+                "
+              >
                 <td>{{ payment.paymentDate | date : "mediumDate" }}</td>
                 <td>₱{{ payment.amount | number : "1.2-2" }}</td>
-                <td>{{ payment.paymentStatus }}</td>
+                <td>
+                  <select
+                    [(ngModel)]="payment.paymentStatus"
+                    (change)="updatePaymentStatus(payment)"
+                  >
+                    <option
+                      *ngFor="let status of statusOptions"
+                      [ngValue]="status.value"
+                    >
+                      {{ status.label }}
+                    </option>
+                  </select>
+                </td>
               </tr>
             </tbody>
           </table>

@@ -33,6 +33,7 @@ export class RequestHistoryComponent implements OnInit {
   searchTerm: string = '';
 
   requests: any[] = [];
+  filteredRequests: any[] = [];
 
   constructor(
     private featuresService: FeaturesService,
@@ -46,26 +47,36 @@ export class RequestHistoryComponent implements OnInit {
   loadRequests(): void {
     this.featuresService.getRequests().subscribe({
       next: (response: any) => {
-        // Map the response correctly using camelCase field names:
         this.requests = response.data.cashAdvanceRequests;
+        this.applyFilters();
       },
       error: (err) => console.error('Error loading requests:', err),
     });
   }
 
+  applyFilters(): void {
+    this.filteredRequests = this.requests.filter((request) => {
+      const matchesSearch =
+        !this.searchTerm ||
+        request.userName.toLowerCase().includes(this.searchTerm.toLowerCase());
+
+      const matchesStatus =
+        !this.selectedStatus || request.requestStatus === this.selectedStatus;
+
+      const matchesStartDate =
+        !this.startDate || new Date(request.requestDate) >= new Date(this.startDate);
+
+      const matchesEndDate =
+        !this.endDate || new Date(request.requestDate) <= new Date(this.endDate);
+
+      return matchesSearch && matchesStatus && matchesStartDate && matchesEndDate;
+    });
+  }
+
   openHistoryView(request: any): void {
-    // Adjust the mapping to use the correct fields from the API:
     this.dialog.open(HistoryViewComponent, {
       width: '500px',
-      data: {
-        requestDate: request.requestDate,        // Changed from request.request_date
-        amount: request.amount,
-        status: request.requestStatus,             // Changed from request.status
-        decisionDate: request.updatedAt,           // Changed from request.decision_date
-        purpose: request.reason,                   // Changed from request.purpose
-        paymentSchedule: request.paymentSchedule || [],
-        processedBy: request.reviewedBy,           // Changed from request.processed_by
-      },
+      data: { request },
     });
   }
 }

@@ -65,6 +65,7 @@ export class ApproveModalComponent implements OnChanges {
     this.featuresService.approveRequest(this.paymentSchedule.id, {}).subscribe({
       next: (response: any) => {
         console.log('Approval successful:', response);
+        alert(' Approval successful');
         this.approvalConfirmed.emit();
         this.closeModal();
       },

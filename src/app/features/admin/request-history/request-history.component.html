@@ -7,34 +7,28 @@
         type="text"
         placeholder="Search..."
         class="search-input"
+        [(ngModel)]="searchTerm"
+        (input)="applyFilters()"
       />
     </div>
     <div class="filter-options">
       <div class="filter-item">
         <label>Start Date</label>
-        <input type="date" [(ngModel)]="startDate" />
+        <input type="date" [(ngModel)]="startDate" (change)="applyFilters()" />
       </div>
       <div class="filter-item">
         <label>End Date</label>
-        <input type="date" [(ngModel)]="endDate" />
+        <input type="date" [(ngModel)]="endDate" (change)="applyFilters()" />
       </div>
       <div class="filter-item">
         <label>Status</label>
-        <select [(ngModel)]="selectedStatus">
+        <select [(ngModel)]="selectedStatus" (change)="applyFilters()">
           <option value="">All Statuses</option>
           <option value="Pending">Pending</option>
           <option value="Approved">Approved</option>
           <option value="Rejected">Rejected</option>
         </select>
       </div>
-      <button class="apply-filters">Apply Filters</button>
-    </div>
-  </div>
-
-  <!-- Stats Section -->
-  <div class="dashboard-container">
-    <div class="stats-container">
-      <!-- Optional Stats display -->
     </div>
   </div>
 
@@ -54,7 +48,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let item of requests; let i = index">
+          <tr *ngFor="let item of filteredRequests">
             <td>{{ item.userName }}</td>
             <td>{{ item.requestDate | date : "medium" }}</td>
             <td>{{ item.neededDate | date : "mediumDate" }}</td>

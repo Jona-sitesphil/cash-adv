@@ -65,6 +65,8 @@ export class EmployeeModalComponent {
       next: (response) => {
         // Emit an object containing both the refresh flag and newRequest data.
         this.submitRequestEvent.emit({ refresh: true, newRequest: response });
+        alert(' Adding successful');
+
         this.closeModal();
       },
       error: (error) => {

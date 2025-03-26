@@ -28,25 +28,21 @@ export class LoginComponent {
   login() {
     this.featuresService.login(this.email, this.password).subscribe({
       next: (response: any) => {
-        // Assuming the response includes a property named 'role'
         const userRole = response.role;
         const message = response.message;
 
         this.zone.run(() => {
           alert("login successful");
-          // this.snackbarService.showSuccess('Login successful!');
           if (userRole === 'Admin') {
             this.router.navigate(['/main/dashboard']);
           } else if (userRole === 'Employee') {
             this.router.navigate(['/employee/dashboard']);
           } else {
-            // Fallback if role is unrecognized
             this.router.navigate(['/']);
           }
         });
       },
       error: (message) => {
-        // this.snackbarService.showError(message);
         alert (message);
       }
     });

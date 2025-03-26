@@ -4,55 +4,58 @@ import { FormsModule } from '@angular/forms';
 import { MatIcon } from '@angular/material/icon';
 import { EmployeeModalComponent } from '../../../core/employee-modal/employee-modal.component';
 import { FeaturesService } from '../../features.service';
+import { DetailsempComponent } from '../../../core/detailsemp/detailsemp.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-employeed',
+  standalone: true,
+  imports: [FormsModule, CommonModule, MatIcon, EmployeeModalComponent,],
   templateUrl: './employeed.component.html',
   styleUrls: ['./employeed.component.css'],
-  imports: [FormsModule, CommonModule, MatIcon, EmployeeModalComponent],
-  standalone: true,
 })
 export class EmployeedComponent implements OnInit {
-  isModalOpen = false;
+  isEmployeeModalOpen = false;
   requests: any[] = [];
 
-  constructor(private featuresService: FeaturesService) {}
+  constructor(
+    private featuresService: FeaturesService,
+    private dialog: MatDialog
+  ) {}
 
   ngOnInit(): void {
     this.loadRequests();
   }
 
-  // Open the New Request modal
   openEmployeeModal(): void {
-    this.isModalOpen = true;
-    console.log('Opening modal...');
+    this.isEmployeeModalOpen = true;
+    console.log('Opening employee modal...');
   }
 
-  // Close the New Request modal
   closeEmployeeModal(): void {
-    this.isModalOpen = false;
+    this.isEmployeeModalOpen = false;
   }
 
-  // When a new request is submitted
-  // If event.refresh is true, force a full page reload after a small delay
+  openDetailsempModal(request: any): void {
+    console.log('Opening details modal...', request);
+    this.dialog.open(DetailsempComponent, {
+      width: '600px',
+      data: { request }
+    });
+  }
+
   addNewRequest(event: { refresh: boolean; newRequest: any }): void {
     if (event.refresh) {
-      // Force a full reload so the page immediately reflects the new changes
-      setTimeout(() => {
-        window.location.reload();
-      }, 500); // 500ms delay for smooth UI transition
+      setTimeout(() => window.location.reload(), 500);
     } else {
-      // Alternatively, append the new request without a full reload
       this.requests.push(event.newRequest);
     }
     this.closeEmployeeModal();
   }
-
-  // Load self requests from the backend
+  
   loadRequests(): void {
     this.featuresService.getSelfRequests().subscribe({
       next: (response: any) => {
-        // Assuming the API returns data in response.data.cashAdvanceRequests
         this.requests = response.data.cashAdvanceRequests;
       },
       error: (err: any) => console.error('Error loading requests:', err),

@@ -5,19 +5,18 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatTableModule } from '@angular/material/table';
 
 @Component({
-  selector: 'app-history-view',
+  selector: 'app-detailsemp',
   standalone: true,
   imports: [CommonModule, MatButtonModule, MatTableModule],
-  templateUrl: './history-view.component.html',
-  styleUrls: ['./history-view.component.css'],
+  templateUrl: './detailsemp.component.html',
+  styleUrls: ['./detailsemp.component.css'],
 })
-export class HistoryViewComponent {
+export class DetailsempComponent {
   constructor(
-    public dialogRef: MatDialogRef<HistoryViewComponent>,
-    @Inject(MAT_DIALOG_DATA)
-    public data: any
+    public dialogRef: MatDialogRef<DetailsempComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any
   ) {
-    console.log('Received Data:', data);
+    console.log('Received Data in modal:', data);
   }
 
   closeModal(): void {

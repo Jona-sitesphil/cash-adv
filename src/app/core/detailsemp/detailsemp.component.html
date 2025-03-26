@@ -14,7 +14,7 @@
     {{ data?.request.neededDate | date : "MMM d, y" }}
   </p>
   <p><strong>Purpose:</strong> {{ data?.request.reason }}</p>
-
+  <p><strong>Rejection Reason:</strong> {{ data?.request.rejectionReason }}</p>
   <h3 *ngIf="data?.request.paymentSchedule?.length > 0">Payment Schedule</h3>
   <table *ngIf="data?.request.paymentSchedule?.length > 0">
     <thead>
