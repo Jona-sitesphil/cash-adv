@@ -1,9 +1,19 @@
 <div class="requests-container">
+  <!-- Updated Refresh Button -->
+  <button mat-button class="btn-refresh" (click)="refreshPage()">
+    Refresh
+  </button>
+
   <h2>My Requests</h2>
   <p>View and track the status of your cash advance requests.</p>
 
   <div class="header">
-    <button class="new-request-btn" (click)="openEmployeeModal()">
+    <button
+      mat-flat-button
+      color="primary"
+      class="new-request-btn"
+      (click)="openEmployeeModal()"
+    >
       <mat-icon>add</mat-icon> New Request
     </button>
   </div>
@@ -22,19 +32,22 @@
         {{ request.neededDate | date : "mediumDate" }} | Requested:
         {{ request.requestDate | date : "medium" }}
       </small>
-      <button class="details-btn" (click)="openDetailsempModal(request)">
+      <button
+        mat-stroked-button
+        color="accent"
+        class="details-btn"
+        (click)="openDetailsempModal(request)"
+      >
         <mat-icon>visibility</mat-icon> Details
       </button>
     </div>
   </div>
 </div>
 
-
+<!-- Employee Modal Component -->
 <app-employee-modal
   *ngIf="isEmployeeModalOpen"
   (closeModalEvent)="closeEmployeeModal()"
   (submitRequestEvent)="addNewRequest($event)"
 >
 </app-employee-modal>
-
-

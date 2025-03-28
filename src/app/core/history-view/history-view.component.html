@@ -2,21 +2,25 @@
   <h2>Request Details</h2>
   <p>
     <strong>Request Date:</strong>
-    {{ data?.request.requestDate | date : "MMM d, y" }}
+    {{ data?.request?.requestDate | date : "MMM d, y" }}
   </p>
   <p>
     <strong>Amount:</strong>
-    {{ data?.request.amount | currency : "PHP" : "symbol" }}
+    {{ data?.request?.amount | currency : "PHP" : "symbol" }}
   </p>
-  <p><strong>Status:</strong> {{ data?.request.requestStatus }}</p>
+  <p><strong>Status:</strong> {{ data?.request?.requestStatus }}</p>
   <p>
     <strong>Needed Date:</strong>
-    {{ data?.request.neededDate | date : "MMM d, y" }}
+    {{ data?.request?.neededDate | date : "MMM d, y" }}
   </p>
-  <p><strong>Purpose:</strong> {{ data?.request.reason }}</p>
+  <p><strong>Purpose:</strong> {{ data?.request?.reason }}</p>
+  <p *ngIf="data?.request?.rejectionReason">
+    <strong>Rejection Reason:</strong> {{ data?.request?.rejectionReason }}
+  </p>
 
-  <h3 *ngIf="data?.request.paymentSchedule?.length > 0">Payment Schedule</h3>
-  <table *ngIf="data?.request.paymentSchedule?.length > 0">
+  <h3 *ngIf="data?.request?.paymentSchedule?.length > 0">Payment Schedule</h3>
+
+  <table *ngIf="data?.request?.paymentSchedule?.length > 0">
     <thead>
       <tr>
         <th>Deduction Date</th>
@@ -24,16 +28,18 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let payment of data?.request.paymentSchedule">
+      <tr *ngFor="let payment of data?.request?.paymentSchedule">
         <td>{{ payment?.paymentDate | date : "MMM d, y" }}</td>
         <td>{{ payment?.amount | currency : "PHP" : "symbol" }}</td>
+       
       </tr>
     </tbody>
   </table>
 
   <p>
     <strong>Processed By:</strong>
-    {{ data?.request.approverName || "Not yet reviewed." }}
+    {{ data?.request?.approverName || "Not yet reviewed." }}
   </p>
+
   <button mat-button color="primary" (click)="closeModal()">Close</button>
 </div>

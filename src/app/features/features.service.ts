@@ -177,6 +177,42 @@ export class FeaturesService {
       .pipe(retry(3), catchError(this.handleError));
   }
 
+  // Removed duplicate handleError function to resolve the error.
+
+  getSelfNotifications(page: number, pageSize: number): Observable<any> {
+    const url = `${this.baseUrl}/api/Notification/self/Cash-advance?page=${page}&pageSize=${pageSize}`;
+    return this.sendGetRequest(url);
+  }
+
+  getNotificationDetails(notificationId: string): Observable<any> {
+    const url = `${this.baseUrl}/api/Notification/view/${notificationId}`;
+    return this.sendGetRequest(url);
+  }
+  sendGetRequest(url: string): Observable<any> {
+    const token = sessionStorage.getItem('auth_token');
+    const options = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      }),
+    };
+
+    return this.http.get<any>(url, options).pipe(
+      map((data: any) => data),
+      retry(3),
+      catchError(this.handleError)
+    );
+  }
+  uploadReceipt(paymentId: number, formData: FormData): Observable<any> {
+    const url = `${this.baseUrl}/api/CashAdvanceRequest/Upload-Receipt/${paymentId}`;
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${sessionStorage.getItem('auth_token')}`,
+    });
+
+    return this.http
+      .put(url, formData, { headers })
+      .pipe(catchError(this.handleError));
+  }
   private handleError(error: HttpErrorResponse) {
     let errorMessage = 'An unknown error occurred!';
     if (error.error instanceof ErrorEvent) {
@@ -186,4 +222,18 @@ export class FeaturesService {
     }
     return throwError(() => new Error(errorMessage));
   }
+  // Fetch the uploaded receipt image using its file path.
+  getUploadedReceipt(imageFilePath: string): Observable<any> {
+    // Construct the URL to retrieve the image.
+    const url = `${this.baseUrl}/api/File/Image/${imageFilePath}`;
+    return this.http
+      .get(url, {
+        headers: this.getHeaders(),
+        responseType: 'blob',
+      })
+      .pipe(
+        map((blob) => URL.createObjectURL(blob)),
+        catchError(this.handleError)
+      );
+   }
 }

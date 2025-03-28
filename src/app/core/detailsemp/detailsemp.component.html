@@ -1,39 +1,69 @@
-<div class="history-container">
-  <h2>Request Details</h2>
-  <p>
-    <strong>Request Date:</strong>
-    {{ data?.request.requestDate | date : "MMM d, y" }}
-  </p>
-  <p>
-    <strong>Amount:</strong>
-    {{ data?.request.amount | currency : "PHP" : "symbol" }}
-  </p>
-  <p><strong>Status:</strong> {{ data?.request.requestStatus }}</p>
-  <p>
-    <strong>Needed Date:</strong>
-    {{ data?.request.neededDate | date : "MMM d, y" }}
-  </p>
-  <p><strong>Purpose:</strong> {{ data?.request.reason }}</p>
-  <p><strong>Rejection Reason:</strong> {{ data?.request.rejectionReason }}</p>
-  <h3 *ngIf="data?.request.paymentSchedule?.length > 0">Payment Schedule</h3>
-  <table *ngIf="data?.request.paymentSchedule?.length > 0">
-    <thead>
-      <tr>
-        <th>Deduction Date</th>
-        <th>Amount</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let payment of data?.request.paymentSchedule">
-        <td>{{ payment?.paymentDate | date : "MMM d, y" }}</td>
-        <td>{{ payment?.amount | currency : "PHP" : "symbol" }}</td>
-      </tr>
-    </tbody>
-  </table>
+  <div class="history-container">
+    <h2>Request Detail</h2>
+    <p>
+      <strong>Request Date:</strong>
+      {{ data?.request.requestDate | date : "MMM d, y" }}
+    </p>
+    <p>
+      <strong>Amount:</strong>
+      {{ data?.request.amount | currency : "PHP" : "symbol" }}
+    </p>
+    <p><strong>Status:</strong> {{ data?.request.requestStatus }}</p>
+    <p><strong>Purpose:</strong> {{ data?.request.reason }}</p>
+    <p><strong>Rejection Reason:</strong> {{ data?.request.rejectionReason }}</p>
 
-  <p>
-    <strong>Processed By:</strong>
-    {{ data?.request.approverName || "Not yet reviewed." }}
-  </p>
-  <button mat-button color="primary" (click)="closeModal()">Close</button>
-</div>
+    <h3 *ngIf="data?.request.paymentSchedule?.length > 0">Payment Schedule</h3>
+    <table *ngIf="data?.request.paymentSchedule?.length > 0">
+      <thead>
+        <tr>
+          <th>Payment Date</th>
+          <th>Amount</th>
+          <th>Receipt</th>
+          <th>Uploaded Receipt</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let payment of data?.request.paymentSchedule">
+          <td>{{ payment.paymentDate | date : "MMM d, y" }}</td>
+          <td>{{ payment.amount | currency : "PHP" : "symbol" }}</td>
+          <td>
+            <input
+              type="file"
+              (change)="onFileSelected($event, payment)"
+              accept="image/*"
+              hidden
+              #fileInput
+            />
+            <button mat-button color="primary" (click)="fileInput.click()">
+              Choose File
+            </button>
+            <p *ngIf="payment.selectedFileName">
+              <strong>Selected:</strong> {{ payment.selectedFileName }}
+            </p>
+            <button
+              mat-button
+              color="accent"
+              (click)="uploadReceipt(payment)"
+              [disabled]="
+                !payment.selectedFile ||
+                data?.request.requestStatus === 'Rejected'
+              "
+            >
+              Upload Receipt
+            </button>
+          </td>
+          <td>
+            <button
+              mat-button
+              class="btn-View"
+              (click)="openReceiptModal(payment.imageFilePath)"
+            >
+              View
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <button mat-button color="primary" (click)="closeModal()">Close</button>
+  </div>

@@ -1,0 +1,18 @@
+<h2 mat-dialog-title>Uploaded Receipt</h2>
+
+<mat-dialog-content>
+  <img
+    *ngIf="data.receiptUrl; else noImage"
+    [src]="data.receiptUrl"
+    alt="Receipt"
+    style="width: 100%;"
+  />
+  <ng-template #noImage>
+    <p>No receipt uploaded yet.</p>
+  </ng-template>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="closeModal()">Close</button>
+</mat-dialog-actions>
+    

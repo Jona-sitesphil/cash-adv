@@ -9,6 +9,8 @@ import { FeaturesService } from './../../features.service';
 import { ApproveModalComponent } from '../../../core/approve-modal/approve-modal.component';
 import { RejectRequestModalComponent } from '../../../core/reject-request-modal/reject-request-modal.component';
 import { PaymentScheduleComponent } from '../../../core/payment-schedule/payment-schedule.component';
+import { LoaderComponent } from '../../../shared/loader/loader.component';
+import { LoaderService } from '../../../loader.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -23,6 +25,7 @@ import { PaymentScheduleComponent } from '../../../core/payment-schedule/payment
     ApproveModalComponent,
     PaymentScheduleComponent,
     RejectRequestModalComponent,
+    LoaderComponent,
   ],
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css'],
@@ -51,7 +54,8 @@ export class DashboardComponent implements OnInit {
 
   constructor(
     private featuresService: FeaturesService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private loaderService: LoaderService
   ) {}
 
   ngOnInit(): void {
@@ -59,25 +63,27 @@ export class DashboardComponent implements OnInit {
   }
 
   // Loads the paginated requests from the backend.
-  // The API is expected to use 1-based page numbering.
   loadRequests(page: number = this.pageIndex): void {
-    // Call the API with (pageIndex + 1) because the API expects 1-based pages.
-    this.featuresService
-      .getRequestsPaginated(page + 1, this.pageSize)
-      .subscribe({
-        next: (response: any) => {
-          // Assuming the API returns:
-          //   data.cashAdvanceRequests: the items on the current page,
-          //   data.totalRecords: total number of records,
-          //   data.totalPages: total pages,
-          //   data.currentPage: the current page (1-based)
-          this.requests = response.data.cashAdvanceRequests;
-          this.totalCount = response.data.totalRecords;
-          this.totalPagesValue = response.data.totalPages;
-          this.pageIndex = response.data.currentPage - 1;
-        },
-        error: (err: any) => console.error('Failed to load requests', err),
-      });
+    this.loaderService.show(); // Show loader before API call
+
+    this.featuresService.getRequestsPaginated(page + 1, this.pageSize).subscribe({
+      next: (response: any) => {
+        // Set the data
+        this.requests = response.data.cashAdvanceRequests;
+        this.totalCount = response.data.totalRecords;
+        this.totalPagesValue = response.data.totalPages;
+        this.pageIndex = response.data.currentPage - 1;
+
+        // Hide loader after data is loaded
+        this.loaderService.hide();
+      },
+      error: (err: any) => {
+        console.error('Failed to load requests', err);
+        
+        // Hide loader even in case of an error to prevent infinite loading state
+        this.loaderService.hide();
+      }
+    });
   }
 
   // Returns the total number of pages.
@@ -132,4 +138,9 @@ export class DashboardComponent implements OnInit {
   closeViewDetailsModal(): void {
     this.isViewDetailsModalOpen = false;
   }
+  refreshPage(): void {
+    window.location.reload();
+  }
+  
 }
+ 

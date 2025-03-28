@@ -2,7 +2,7 @@
   <div class="modal">
     <mat-card class="payment-card">
       <mat-card-title class="title">
-        Request Details for {{ employeeName }}
+        Request Details for aa{{ employeeName }}
       </mat-card-title>
 
       <mat-card-content>
@@ -45,7 +45,6 @@
           </table>
         </div>
 
-        <!-- Payment Schedule Table -->
         <div class="table-container">
           <h3>Payment Schedule</h3>
           <table class="custom-table">
@@ -54,6 +53,7 @@
                 <th>Payment Date</th>
                 <th>Amount</th>
                 <th>Status</th>
+                <th>Receipt</th>
               </tr>
             </thead>
             <tbody>
@@ -77,6 +77,15 @@
                       {{ status.label }}
                     </option>
                   </select>
+                </td>
+                <td>
+                  <button
+                    mat-button
+                    class="btn-View"
+                    (click)="openReceiptModal(payment.imageFilePath)"
+                  >
+                    View
+                  </button>
                 </td>
               </tr>
             </tbody>

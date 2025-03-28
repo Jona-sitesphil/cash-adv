@@ -21,7 +21,6 @@ export class LoginComponent {
   constructor(
     private featuresService: FeaturesService,
     private router: Router,
-
     private zone: NgZone
   ) {}
 
@@ -29,10 +28,15 @@ export class LoginComponent {
     this.featuresService.login(this.email, this.password).subscribe({
       next: (response: any) => {
         const userRole = response.role;
-        const message = response.message;
+        const token = response.token;
+
+        if (token) {
+          localStorage.setItem('token', token);
+          localStorage.setItem('role', userRole);
+        }
 
         this.zone.run(() => {
-          alert("login successful");
+          alert('Login successful');
           if (userRole === 'Admin') {
             this.router.navigate(['/main/dashboard']);
           } else if (userRole === 'Employee') {
@@ -42,9 +46,11 @@ export class LoginComponent {
           }
         });
       },
-      error: (message) => {
-        alert (message);
-      }
+      error: (error) => {
+        console.error('❌ Login error:', error);
+        this.errorMessage = 'Invalid email or password';
+        alert(this.errorMessage);
+      },
     });
   }
 }

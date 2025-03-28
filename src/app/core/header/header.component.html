@@ -3,6 +3,9 @@
     <mat-icon style="color: white">menu</mat-icon>
   </button>
   <span><strong>Cash Advance</strong></span>
+  <span class="spacer"></span>
+
+  <app-notification />
 </mat-toolbar>
 
 <mat-sidenav-container class="sidenav-container">
@@ -10,7 +13,7 @@
     #sidenav
     [mode]="isMobile ? 'over' : 'side'"
     [opened]="!isMobile"
-    class="sidenav"
+    class="sidenav" 
   >
     <!-- Sidebar Logo -->
     <div class="image-wrapper">
@@ -41,7 +44,7 @@
   </mat-sidenav>
 
   <mat-sidenav-content class="content">
-    <router-outlet></router-outlet>
+    <router-outlet />
   </mat-sidenav-content>
 </mat-sidenav-container>
 

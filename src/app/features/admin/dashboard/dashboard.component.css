@@ -57,7 +57,6 @@
   font-size: 14px;
 }
 
-/* Table Section */
 
 .parent-container {
   display: flex;
@@ -128,7 +127,6 @@ tr:hover {
   flex-direction: column;
   margin: 5px auto 5px 0;
 }
-/* Style for the pagination controls positioned at the lower right */
 .pagination-controls {
   display: flex;
   justify-content: flex-end;
@@ -136,7 +134,6 @@ tr:hover {
   margin-top: 10px;
 }
 
-/* Optionally, you can adjust spacing and font styling */
 .pagination-controls button {
   margin-left: 5px;
 }

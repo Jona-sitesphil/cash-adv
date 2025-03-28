@@ -8,12 +8,13 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { FeaturesService } from './../../features/features.service';
+import { NotificationComponent } from '../../shared/notification/notification.component';
 
 @Component({
   selector: 'app-header',
   standalone: true,
   imports: [
-  CommonModule,
+    CommonModule,
     RouterModule,
     MatSidenavModule,
     MatToolbarModule,
@@ -21,23 +22,21 @@ import { FeaturesService } from './../../features/features.service';
     MatIconModule,
     MatListModule,
     MatExpansionModule,
+    NotificationComponent,
   ],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css',
 })
 export class HeaderComponent {
-  isMobile = window.innerWidth < 768; 
-  
+  isMobile = window.innerWidth < 768;
+
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
     this.isMobile = event.target.innerWidth < 768;
   }
-  toggleSidenav() {
-    
-  }
-  constructor(private featuresService: FeaturesService){}
-  onLogout(){
+  toggleSidenav() {}
+  constructor(private featuresService: FeaturesService) {}
+  onLogout() {
     this.featuresService.handleLogout();
-    
   }
 }

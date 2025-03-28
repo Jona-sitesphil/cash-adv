@@ -10,7 +10,7 @@ import { MatDialog } from '@angular/material/dialog';
 @Component({
   selector: 'app-employeed',
   standalone: true,
-  imports: [FormsModule, CommonModule, MatIcon, EmployeeModalComponent,],
+  imports: [FormsModule, CommonModule, MatIcon, EmployeeModalComponent],
   templateUrl: './employeed.component.html',
   styleUrls: ['./employeed.component.css'],
 })
@@ -40,7 +40,7 @@ export class EmployeedComponent implements OnInit {
     console.log('Opening details modal...', request);
     this.dialog.open(DetailsempComponent, {
       width: '600px',
-      data: { request }
+      data: { request },
     });
   }
 
@@ -52,7 +52,7 @@ export class EmployeedComponent implements OnInit {
     }
     this.closeEmployeeModal();
   }
-  
+
   loadRequests(): void {
     this.featuresService.getSelfRequests().subscribe({
       next: (response: any) => {
@@ -60,5 +60,8 @@ export class EmployeedComponent implements OnInit {
       },
       error: (err: any) => console.error('Error loading requests:', err),
     });
+  }
+  refreshPage(): void {
+    window.location.reload();
   }
 }

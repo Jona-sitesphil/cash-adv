@@ -9,6 +9,8 @@ import { MatTableModule } from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
 import { HistoryViewComponent } from '../../../core/history-view/history-view.component';
 import { FeaturesService } from '../../features.service';
+import { LoaderService } from '../../../loader.service';
+import { LoaderComponent } from '../../../shared/loader/loader.component';
 
 @Component({
   selector: 'app-request-history',
@@ -21,6 +23,7 @@ import { FeaturesService } from '../../features.service';
     FormsModule,
     MatSelectModule,
     MatTableModule,
+    LoaderComponent,
   ],
   templateUrl: './request-history.component.html',
   styleUrls: ['./request-history.component.css'],
@@ -37,7 +40,8 @@ export class RequestHistoryComponent implements OnInit {
 
   constructor(
     private featuresService: FeaturesService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private loaderService: LoaderService
   ) {}
 
   ngOnInit(): void {
@@ -45,12 +49,18 @@ export class RequestHistoryComponent implements OnInit {
   }
 
   loadRequests(): void {
+    this.loaderService.show(); // Show loader before API call
+
     this.featuresService.getRequests().subscribe({
       next: (response: any) => {
         this.requests = response.data.cashAdvanceRequests;
         this.applyFilters();
+        this.loaderService.hide(); // Hide loader after successful data fetch
       },
-      error: (err) => console.error('Error loading requests:', err),
+      error: (err) => {
+        console.error('Error loading requests:', err);
+        this.loaderService.hide(); // Ensure loader stops even on error
+      },
     });
   }
 
@@ -64,12 +74,16 @@ export class RequestHistoryComponent implements OnInit {
         !this.selectedStatus || request.requestStatus === this.selectedStatus;
 
       const matchesStartDate =
-        !this.startDate || new Date(request.requestDate) >= new Date(this.startDate);
+        !this.startDate ||
+        new Date(request.requestDate) >= new Date(this.startDate);
 
       const matchesEndDate =
-        !this.endDate || new Date(request.requestDate) <= new Date(this.endDate);
+        !this.endDate ||
+        new Date(request.requestDate) <= new Date(this.endDate);
 
-      return matchesSearch && matchesStatus && matchesStartDate && matchesEndDate;
+      return (
+        matchesSearch && matchesStatus && matchesStartDate && matchesEndDate
+      );
     });
   }
 

@@ -105,3 +105,11 @@ p {
   align-items: center;
   gap: 5px;
 }
+.btn-refresh {
+  border-radius: 20px; /* Makes the button rounded */
+  color: #1976d2; /* Blue text color */
+  border: 1px solid #bbdefb; /* Light blue border */
+  background-color: #e3f2fd; /* Light blue background */
+  padding: 6px 12px; /* Adjust padding */
+  font-weight: bold; /* Optional: Make text bolder */
+}

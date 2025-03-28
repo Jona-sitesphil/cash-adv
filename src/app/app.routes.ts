@@ -4,8 +4,9 @@ import { DashboardComponent } from './features/admin/dashboard/dashboard.compone
 import { MainLayoutComponent } from './core/main-layout/main-layout.component';
 import { RequestHistoryComponent } from './features/admin/request-history/request-history.component';
 import { EmployeeLayoutComponent } from './core/employee-layout/employee-layout.component';
-import { HeaderComponent } from './core/header/header.component';
 import { EmployeedComponent } from './features/employee/employeed/employeed.component';
+import { authGuard } from './auth.guard';
+
 export const routes: Routes = [
   {
     path: '',
@@ -15,15 +16,32 @@ export const routes: Routes = [
   { path: 'login', component: LoginComponent },
   {
     path: 'main',
-    component: HeaderComponent,
+    component: MainLayoutComponent,
+
     children: [
-      { path: 'dashboard', component: DashboardComponent },
-      { path: 'request-history', component: RequestHistoryComponent },
+      {
+        path: 'dashboard',
+        component: DashboardComponent,
+        canActivate: [authGuard],
+      },
+      {
+        path: 'request-history',
+        component: RequestHistoryComponent,
+        canActivate: [authGuard],
+      },
     ],
   },
   {
     path: 'employee',
     component: EmployeeLayoutComponent,
-    children: [{ path: 'dashboard', component: EmployeedComponent }],
+    canActivate: [authGuard],
+    children: [
+      {
+        path: 'dashboard',
+        component: EmployeedComponent,
+        canActivate: [authGuard],
+      },
+    ],
   },
+  { path: '**', redirectTo: 'login' },
 ];

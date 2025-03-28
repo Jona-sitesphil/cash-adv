@@ -1,18 +1,26 @@
+<app-loader />
+
 <div class="wrapper" [ngClass]="{ 'sidebar-open': isSidebarOpen }">
   <!-- Optional Dashboard Stats Section -->
   <!--
   <div class="dashboard-container">
     <div class="stats-container">
+      
       <div class="stats-box" *ngFor="let data of jonadata">
         <p class="stats-number">{{ data.count }}</p>
         <p class="stats-text">{{ data.label }}</p>
       </div>
     </div>
   </div>
+
   -->
+  <button mat-button class="btn-refresh" (click)="refreshPage()">
+    Refresh
+  </button>
 
   <div class="parent-container">
     <div class="table-container">
+      
       <table>
         <thead>
           <tr>
@@ -63,7 +71,6 @@
         </tbody>
       </table>
 
-      <!-- Pagination Controls Positioned at the Lower Right -->
       <div class="pagination-controls">
         <button mat-button (click)="prevPage()" [disabled]="pageIndex === 0">
           Previous
