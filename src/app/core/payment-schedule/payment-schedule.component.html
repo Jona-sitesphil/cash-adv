@@ -2,7 +2,7 @@
   <div class="modal">
     <mat-card class="payment-card">
       <mat-card-title class="title">
-        Request Details for aa{{ employeeName }}
+        Request Details {{ employeeName }}
       </mat-card-title>
 
       <mat-card-content>
@@ -54,6 +54,7 @@
                 <th>Amount</th>
                 <th>Status</th>
                 <th>Receipt</th>
+                <th>Uploaded Receipt</th>
               </tr>
             </thead>
             <tbody>
@@ -79,12 +80,50 @@
                   </select>
                 </td>
                 <td>
+                  <!-- File Input for Upload -->
+                  <input
+                    type="file"
+                    (change)="onFileSelected($event, payment)"
+                    accept="image/*"
+                    hidden
+                    #fileInput
+                  />
                   <button
                     mat-button
+                    color="primary"
+                    (click)="fileInput.click()"
+                  >
+                    Choose File
+                  </button>
+                  <p *ngIf="payment.selectedFileName">
+                    <strong>Selected:</strong> {{ payment.selectedFileName }}
+                  </p>
+
+                  <!-- Upload Receipt Button -->
+                  <button
+                    mat-button
+                    color="accent"
+                    (click)="uploadReceipt(payment)"
+                    [disabled]="
+                      !payment.selectedFile ||
+                      data?.request.requestStatus === 'Rejected'
+                    "
+                  >
+                    Upload Cash Voucher
+                  </button>
+                </td>
+
+                <td></td>
+                <td>
+                  <!-- View Receipt Button -->
+                  <button
+                    mat-button
+                    color="primary"
                     class="btn-View"
                     (click)="openReceiptModal(payment.imageFilePath)"
+                    [disabled]="!payment.imageFilePath"
                   >
-                    View
+                    View Receipt
                   </button>
                 </td>
               </tr>

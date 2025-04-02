@@ -14,6 +14,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { FeaturesService } from './../../features/features.service';
 import { ViewReceiptComponent } from '../view-receipt/view-receipt.component';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-payment-schedule',
@@ -24,7 +25,7 @@ import { ViewReceiptComponent } from '../view-receipt/view-receipt.component';
     MatTableModule,
     MatCardModule,
     MatButtonModule,
-    MatDialogModule  // Add MatDialogModule here
+    MatDialogModule, // Required for opening dialogs
   ],
   templateUrl: './payment-schedule.component.html',
   styleUrls: ['./payment-schedule.component.css'],
@@ -33,19 +34,21 @@ export class PaymentScheduleComponent implements OnChanges {
   @Input() paymentSchedule: any = {};
   @Input() employeeName: string = '';
   @Output() closeModalEvent = new EventEmitter<void>();
+  data: any;
 
-  // Define the dropdown options with numeric values
+  constructor(
+    private featuresService: FeaturesService,
+    private dialog: MatDialog,
+    private http: HttpClient // Inject HttpClient for API calls
+  ) {}
+
+  // Dropdown options for status
   statusOptions: { value: number; label: string }[] = [
     { value: 3, label: 'Paid' },
     { value: 2, label: 'Unpaid' },
   ];
 
-  constructor(
-    private featuresService: FeaturesService,
-    private dialog: MatDialog  // Inject MatDialog
-  ) {}
-
-  // Map backend string values to the corresponding numeric values
+  // Convert backend string values to numeric values
   ngOnChanges(changes: SimpleChanges): void {
     if (
       changes['paymentSchedule'] &&
@@ -76,17 +79,75 @@ export class PaymentScheduleComponent implements OnChanges {
       return;
     }
 
-    this.featuresService.updatePaymentStatus(payment.id, payment.paymentStatus)
+    this.featuresService
+      .updatePaymentStatus(payment.id, payment.paymentStatus)
       .subscribe({
-        next: () => {
-          console.log(`Payment status updated to ${payment.paymentStatus}`);
-          alert('Payment is Edited');
+        next: (response: any) => {
+          if (response.status === 'FAILED') {
+            alert(`Failed to update payment status. ${response.message}`);
+          } else {
+            console.log(`Payment status updated to ${payment.paymentStatus}`);
+            alert('Payment status updated successfully!');
+          }
         },
         error: (err) => console.error('Error updating payment status:', err),
       });
   }
 
-  // Use the imageFilePath instead of the payment ID.
+  // File selection event handler
+  onFileSelected(event: Event, payment: any): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      payment.selectedFile = input.files[0];
+      payment.selectedFileName = payment.selectedFile.name;
+    }
+  }
+
+  // Upload receipt to backend
+  uploadReceipt(payment: any): void {
+    if (!payment.selectedFile) {
+      alert('Please select a file first.');
+      return;
+    }
+
+    if (!payment.id) {
+      alert('Missing payment ID.');
+      return;
+    }
+
+    console.log('Uploading receipt for Payment ID:', payment.id);
+
+    const formData = new FormData();
+    formData.append('receiptImage', payment.selectedFile);
+
+    // Retrieve the auth token from sessionStorage
+    const authToken = sessionStorage.getItem('auth_token');
+    const headers = { Authorization: `Bearer ${authToken}` };
+
+    this.http
+      .put(
+        `http://10.0.0.12:5249/api/CashAdvanceRequest/Upload-Receipt/${payment.id}`,
+        formData,
+        { headers }
+      )
+      .subscribe({
+        next: (response: any) => {
+          if (response.status === 'FAILED') {
+            alert(`Upload failed. ${response.message}`);
+          } else {
+            alert(`Receipt uploaded successfully for ${payment.paymentDate}!`);
+            payment.selectedFile = null;
+            payment.selectedFileName = '';
+          }
+        },
+        error: (error) => {
+          console.error('Upload failed:', error);
+          alert('Failed to upload receipt. Please try again.');
+        },
+      });
+  }
+
+  // Open receipt in modal
   openReceiptModal(imageFilePath: string): void {
     this.featuresService.getUploadedReceipt(imageFilePath).subscribe({
       next: (receiptUrl) => {

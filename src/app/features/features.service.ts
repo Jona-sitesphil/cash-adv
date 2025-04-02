@@ -12,7 +12,7 @@ import { Router } from '@angular/router';
   providedIn: 'root',
 })
 export class FeaturesService {
-  private baseUrl = 'http://10.0.0.10:5249';
+  private baseUrl = 'http://10.0.0.12:5249';
 
   constructor(private http: HttpClient, private router: Router) {}
 
@@ -235,5 +235,5 @@ export class FeaturesService {
         map((blob) => URL.createObjectURL(blob)),
         catchError(this.handleError)
       );
-   }
+  }
 }

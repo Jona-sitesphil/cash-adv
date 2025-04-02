@@ -1,5 +1,10 @@
 import { Component, Inject } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import {
+  MatDialogRef,
+  MAT_DIALOG_DATA,
+  MatDialog,
+  MatDialogModule,
+} from '@angular/material/dialog';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTableModule } from '@angular/material/table';
@@ -10,17 +15,17 @@ import { ViewReceiptComponent } from '../view-receipt/view-receipt.component';
 @Component({
   selector: 'app-detailsemp',
   standalone: true,
-  imports: [CommonModule, MatButtonModule, MatTableModule, ],
+  imports: [CommonModule, MatButtonModule, MatTableModule],
   templateUrl: './detailsemp.component.html',
   styleUrls: ['./detailsemp.component.css'],
 })
 export class DetailsempComponent {
-  featuresService: any;
-  dialog: any;
   constructor(
     public dialogRef: MatDialogRef<DetailsempComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private http: HttpClient // Inject HttpClient
+    private http: HttpClient, // Inject HttpClient
+    private featuresService: FeaturesService,
+    private dialog: MatDialog // Properly inject MatDialog here
   ) {
     console.log('Received Data in modal:', data);
   }
@@ -33,7 +38,7 @@ export class DetailsempComponent {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
       payment.selectedFile = input.files[0];
-      payment.selectedFileName = payment.selectedFile.name;
+      payment.selectedFileName = payment.selectedFile.n2ame;
     }
   }
 
@@ -63,7 +68,7 @@ export class DetailsempComponent {
     };
     this.http
       .put(
-        `http://10.0.0.10:5249/api/CashAdvanceRequest/Upload-Receipt/${payment.id}`,
+        `http://10.0.0.12:5249/api/CashAdvanceRequest/Upload-Receipt/${payment.id}`,
         formData,
         { headers } // Attach the headers
       )
@@ -79,18 +84,19 @@ export class DetailsempComponent {
         },
       });
   }
-   openReceiptModal(imageFilePath: string): void {
-      this.featuresService.getUploadedReceipt(imageFilePath).subscribe({
-        next: (receiptUrl: any) => {
-          this.dialog.open(ViewReceiptComponent, {
-            data: { receiptUrl },
-            width: '600px',
-          });
-        },
-        error: (err: any) => {
-          console.error('Error retrieving receipt:', err);
-          alert('Error retrieving receipt');
-        },
-      });
-    }
+  // Use the imageFilePath instead of the payment ID.
+  openReceiptModal(imageFilePath: string): void {
+    this.featuresService.getUploadedReceipt(imageFilePath).subscribe({
+      next: (receiptUrl) => {
+        this.dialog.open(ViewReceiptComponent, {
+          data: { receiptUrl },
+          width: '600px',
+        });
+      },
+      error: (err) => {
+        console.error('Error retrieving receipt:', err);
+        alert('Error retrieving receipt');
+      },
+    });
+  }
 }
