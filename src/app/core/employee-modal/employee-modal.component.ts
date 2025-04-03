@@ -11,19 +11,7 @@ import { CommonModule } from '@angular/common';
   imports: [FormsModule, MatIcon, CommonModule],
 })
 export class EmployeeModalComponent {
-  openViewDetailsModal(arg0: any) {
-    throw new Error('Method not implemented.');
-  }
-  openRejectModal(arg0: any, arg1: any) {
-    throw new Error('Method not implemented.');
-  }
-  openApproveModal(arg0: any, arg1: any) {
-    throw new Error('Method not implemented.');
-  }
-  mockdata: any;
-  handleNewRequest($event: any) {
-    throw new Error('Method not implemented.');
-  }
+  // Initial form field values
   amount: number = 0;
   reason: string = '';
   neededDate: string = '';
@@ -32,27 +20,44 @@ export class EmployeeModalComponent {
 
   @Output() closeModalEvent = new EventEmitter<void>();
   @Output() submitRequestEvent = new EventEmitter<any>();
-  isSidebarOpen: any;
-  showEmployeeModal: any;
+
+  isSidebarOpen: boolean = false;
+  showEmployeeModal: boolean = false;
 
   constructor(private featuresService: FeaturesService) {}
 
+  // Close the modal and emit the close event
   closeModal(): void {
     this.closeModalEvent.emit();
   }
-  // Update the paymentDates array based on the monthsToPay value.
+
+  // Handle the changes to monthsToPay and dynamically create the payment dates
   updatePaymentDates(value: number): void {
     this.monthsToPay = value;
-    // Re-create the array with empty strings for each month.
-    this.paymentDates = Array(value).fill('');
+
+    // Reset payment dates whenever the monthsToPay changes
+    this.paymentDates = [];
+    if (value > 0 && this.neededDate) {
+      let currentDate = new Date(this.neededDate);
+      for (let i = 0; i < value; i++) {
+        currentDate.setMonth(currentDate.getMonth() + 1); // Increment by 1 month
+        this.paymentDates.push(currentDate.toISOString().split('T')[0]); // Push the new date in YYYY-MM-DD format
+      }
+    }
   }
 
-  // Update a specific payment date in the array.
+  // Update a specific payment date in the paymentDates array
   updatePaymentDate(index: number, value: string): void {
     this.paymentDates[index] = value;
   }
 
+  // Submit the cash advance request and handle the response
   submitRequest(): void {
+    if (this.amount < 500) {
+      alert('Amount should be at least ₱500');
+      return;
+    }
+
     const newRequest = {
       reason: this.reason,
       amount: this.amount,
@@ -63,15 +68,38 @@ export class EmployeeModalComponent {
 
     this.featuresService.createRequest(newRequest).subscribe({
       next: (response) => {
-        // Emit an object containing both the refresh flag and newRequest data.
-        this.submitRequestEvent.emit({ refresh: true, newRequest: response });
-        alert(' Adding successful');
-
-        this.closeModal();
+        if (response.status === 'FAILED') {
+          alert(
+            `Request submission failed: ${
+              response.message || 'Please try again.'
+            }`
+          );
+        } else {
+          // Emit an object containing both the refresh flag and newRequest data.
+          this.submitRequestEvent.emit({ refresh: true, newRequest: response });
+          alert('Request submitted successfully');
+          this.closeModal(); // Close the modal after submitting the request
+        }
       },
       error: (error) => {
         console.error('Error submitting request:', error);
+        alert('An error occurred while submitting the request.');
       },
     });
+  }
+
+  // These are placeholder methods you had, add proper implementations based on your use case
+  openViewDetailsModal(arg0: any) {
+    throw new Error('Method not implemented.');
+  }
+  openRejectModal(arg0: any, arg1: any) {
+    throw new Error('Method not implemented.');
+  }
+  openApproveModal(arg0: any, arg1: any) {
+    throw new Error('Method not implemented.');
+  }
+
+  handleNewRequest($event: any) {
+    throw new Error('Method not implemented.');
   }
 }

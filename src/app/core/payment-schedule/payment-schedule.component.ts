@@ -34,6 +34,8 @@ export class PaymentScheduleComponent implements OnChanges {
   @Input() paymentSchedule: any = {};
   @Input() employeeName: string = '';
   @Output() closeModalEvent = new EventEmitter<void>();
+  @Output() receiptUploadSuccess = new EventEmitter<void>(); // Emit success event
+
   data: any;
 
   constructor(
@@ -126,23 +128,29 @@ export class PaymentScheduleComponent implements OnChanges {
 
     this.http
       .put(
-        `http://10.0.0.12:5249/api/CashAdvanceRequest/Upload-Receipt/${payment.id}`,
+        `http://10.0.0.9:5249/api/CashAdvanceRequest/Upload-Receipt/${payment.id}`,
         formData,
         { headers }
       )
       .subscribe({
         next: (response: any) => {
           if (response.status === 'FAILED') {
-            alert(`Upload failed. ${response.message}`);
+            alert(`Upload failed. `);
           } else {
-            alert(`Receipt uploaded successfully for ${payment.paymentDate}!`);
+            alert(`Receipt uploaded successfully!`);
             payment.selectedFile = null;
             payment.selectedFileName = '';
+
+            // Emit success event after upload
+            this.receiptUploadSuccess.emit();
           }
         },
         error: (error) => {
           console.error('Upload failed:', error);
           alert('Failed to upload receipt. Please try again.');
+
+          // Emit success event after upload
+          this.receiptUploadSuccess.emit();
         },
       });
   }

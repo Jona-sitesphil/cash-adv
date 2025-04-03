@@ -36,11 +36,11 @@ export class DashboardComponent implements OnInit {
   totalPagesValue: number = 0; // Total pages from API
   dashboardStats: any = {};
 
-  jonadata: any[] = [
-    { label: 'Total Request', count: 7 },
-    { label: 'Pending Request', count: 4 },
-    { label: 'Approved this Month', count: 3 },
-  ];
+  // jonadata: any[] = [
+  //   { label: 'Total Request', count: 7 },
+  //   { label: 'Pending Request', count: 4 },
+  //   { label: 'Approved this Month', count: 3 },
+  // ];
   isSidebarOpen: boolean = false;
 
   isApproveModalOpen: boolean = false;
@@ -51,6 +51,9 @@ export class DashboardComponent implements OnInit {
   // Pagination settings
   pageIndex: number = 0; // Local 0-based page index
   pageSize: number = 10; // 10 rows per page
+  allCount: number = 0;
+  pendingCount: number = 0;
+  approvedThisMonth: number = 0;
 
   constructor(
     private featuresService: FeaturesService,
@@ -66,24 +69,29 @@ export class DashboardComponent implements OnInit {
   loadRequests(page: number = this.pageIndex): void {
     this.loaderService.show(); // Show loader before API call
 
-    this.featuresService.getRequestsPaginated(page + 1, this.pageSize).subscribe({
-      next: (response: any) => {
-        // Set the data
-        this.requests = response.data.cashAdvanceRequests;
-        this.totalCount = response.data.totalRecords;
-        this.totalPagesValue = response.data.totalPages;
-        this.pageIndex = response.data.currentPage - 1;
+    this.featuresService
+      .getRequestsPaginated(page + 1, this.pageSize)
+      .subscribe({
+        next: (response: any) => {
+          // Set the data
+          this.requests = response.data.cashAdvanceRequests;
+          this.allCount = response.data.allCount;
+          this.pendingCount = response.data.pendingCount;
+          this.approvedThisMonth = response.data.approvedThisMonth;
+          this.totalCount = response.data.totalRecords;
+          this.totalPagesValue = response.data.totalPages;
+          this.pageIndex = response.data.currentPage - 1;
 
-        // Hide loader after data is loaded
-        this.loaderService.hide();
-      },
-      error: (err: any) => {
-        console.error('Failed to load requests', err);
-        
-        // Hide loader even in case of an error to prevent infinite loading state
-        this.loaderService.hide();
-      }
-    });
+          // Hide loader after data is loaded
+          this.loaderService.hide();
+        },
+        error: (err: any) => {
+          console.error('Failed to load requests', err);
+
+          // Hide loader even in case of an error to prevent infinite loading state
+          this.loaderService.hide();
+        },
+      });
   }
 
   // Returns the total number of pages.
@@ -141,6 +149,9 @@ export class DashboardComponent implements OnInit {
   refreshPage(): void {
     window.location.reload();
   }
-  
+
+  onReceiptUploadSuccess(): void {
+    console.log('Receipt upload successful! Reloading requests...');
+    this.loadRequests(); // Call the API to reload data
+  }
 }
- 

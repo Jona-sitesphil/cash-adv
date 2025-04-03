@@ -2,7 +2,7 @@
   <div class="modal">
     <mat-card class="payment-card">
       <mat-card-title class="title">
-        Request Details {{ employeeName }}
+        Request Details ss {{ employeeName }}
       </mat-card-title>
 
       <mat-card-content>
@@ -80,7 +80,6 @@
                   </select>
                 </td>
                 <td>
-                  <!-- File Input for Upload -->
                   <input
                     type="file"
                     (change)="onFileSelected($event, payment)"
@@ -95,6 +94,7 @@
                   >
                     Choose File
                   </button>
+
                   <p *ngIf="payment.selectedFileName">
                     <strong>Selected:</strong> {{ payment.selectedFileName }}
                   </p>
@@ -113,8 +113,14 @@
                   </button>
                 </td>
 
-                <td></td>
                 <td>
+                  <!-- Show uploaded receipt -->
+                  <img
+                    *ngIf="payment.previewImage"
+                    [src]="payment.previewImage"
+                    class="receipt-preview"
+                  />
+
                   <!-- View Receipt Button -->
                   <button
                     mat-button

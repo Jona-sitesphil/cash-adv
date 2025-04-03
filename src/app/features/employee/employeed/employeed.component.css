@@ -96,6 +96,11 @@ p {
   color: #d32f2f;
 }
 
+.paid {
+  background: #d4f5dc;
+  color: #007bff;
+}
+
 .details-btn {
   background: none;
   border: none;

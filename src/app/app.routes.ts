@@ -6,7 +6,7 @@ import { RequestHistoryComponent } from './features/admin/request-history/reques
 import { EmployeeLayoutComponent } from './core/employee-layout/employee-layout.component';
 import { EmployeedComponent } from './features/employee/employeed/employeed.component';
 import { authGuard } from './auth.guard';
-
+import { UsermanagementComponent } from './features/admin/usermanagement/usermanagement.component';
 export const routes: Routes = [
   {
     path: '',
@@ -29,8 +29,14 @@ export const routes: Routes = [
         component: RequestHistoryComponent,
         canActivate: [authGuard],
       },
+      {
+        path: 'usermanagement',
+        component: UsermanagementComponent,
+        canActivate: [authGuard],
+      },
     ],
   },
+
   {
     path: 'employee',
     component: EmployeeLayoutComponent,

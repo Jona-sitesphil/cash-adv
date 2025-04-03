@@ -127,3 +127,17 @@ tr:hover {
 .view-btn:hover {
   background: #0056b3;
 }
+.pagination-controls {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.pagination-controls button {
+  margin-left: 5px;
+}
+.pagination-controls span {
+  margin: 0 10px;
+  font-size: 14px;
+}

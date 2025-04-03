@@ -13,7 +13,7 @@
     #sidenav
     [mode]="isMobile ? 'over' : 'side'"
     [opened]="!isMobile"
-    class="sidenav" 
+    class="sidenav"
   >
     <!-- Sidebar Logo -->
     <div class="image-wrapper">
@@ -34,6 +34,12 @@
       <mat-nav-list>
         <a mat-list-item routerLink="/main/request-history">
           <mat-icon>history</mat-icon> <strong>Request History</strong>
+        </a>
+      </mat-nav-list>
+
+      <mat-nav-list>
+        <a mat-list-item routerLink="/main/usermanagement">
+          <mat-icon>person_add</mat-icon> <strong>Employee Management</strong>
         </a>
       </mat-nav-list>
 

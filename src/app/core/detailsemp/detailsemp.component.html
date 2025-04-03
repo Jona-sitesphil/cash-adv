@@ -1,5 +1,5 @@
 <div class="history-container">
-  <h2>Request Detail aaa</h2>
+  <h2>Request Details</h2>
   <p>
     <strong>Request Date:</strong>
     {{ data?.request.requestDate | date : "MMM d, y" }}
@@ -19,6 +19,7 @@
         <th>Payment Date</th>
         <th>Amount</th>
         <th>Receipt</th>
+        <th>Status</th>
       </tr>
     </thead>
     <tbody>
@@ -62,6 +63,7 @@
             View Receipt
           </button>
         </td>
+        <td>{{ payment.paymentStatus }}</td>
         <!-- <td>
           <button
             mat-button

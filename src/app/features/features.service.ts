@@ -12,7 +12,10 @@ import { Router } from '@angular/router';
   providedIn: 'root',
 })
 export class FeaturesService {
-  private baseUrl = 'http://10.0.0.12:5249';
+  getDashboardStats() {
+    throw new Error('Method not implemented.');
+  }
+  private baseUrl = 'http://10.0.0.9:5249';
 
   constructor(private http: HttpClient, private router: Router) {}
 
@@ -55,7 +58,7 @@ export class FeaturesService {
       next: () => {
         sessionStorage.removeItem('auth_token');
         sessionStorage.removeItem('refresh_token');
-        this.router.navigate(['/login']);
+       this.router.navigate(['/login']);
       },
       error: (error) => console.error('Logout failed:', error),
     });
@@ -78,10 +81,25 @@ export class FeaturesService {
       .pipe(retry(3), catchError(this.handleError));
   }
 
-  getRequests(): Observable<any> {
+  getRequests(
+    page: number,
+    pageSize: number,
+    selectedStatus: string,
+    startDate: string,
+    endDate: string
+  ): Observable<any> {
+    const params = {
+      page: page.toString(), // Convert number to string for query params
+      pageSize: pageSize.toString(),
+      status: selectedStatus || '', // Ensure empty string if not provided
+      startDate: startDate || '',
+      endDate: endDate || '',
+    };
+
     return this.http
       .get<any>(`${this.baseUrl}/api/CashAdvanceRequest`, {
         headers: this.getHeaders(),
+        params: params, // Pass parameters
       })
       .pipe(retry(3), catchError(this.handleError));
   }
