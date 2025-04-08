@@ -68,7 +68,7 @@ export class DetailsempComponent {
     };
     this.http
       .put(
-        `http://10.0.0.4:5249/api/CashAdvanceRequest/Upload-Receipt/${payment.id}`,
+        `http://10.0.0.27:5249/api/CashAdvanceRequest/Upload-Receipt/${payment.id}`,
         formData,
         { headers } // Attach the headers
       )

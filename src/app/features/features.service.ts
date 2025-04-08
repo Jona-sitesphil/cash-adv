@@ -15,7 +15,7 @@ export class FeaturesService {
   getDashboardStats() {
     throw new Error('Method not implemented.');
   }
-  private baseUrl = 'http://10.0.0.4:5249';
+  private baseUrl = 'http://10.0.0.27:5249';
 
   constructor(private http: HttpClient, private router: Router) {}
 
