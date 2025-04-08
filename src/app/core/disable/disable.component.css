@@ -1,0 +1,48 @@
+:host {
+  display: block;
+  padding: 1.5rem;
+  font-family: "Segoe UI", Roboto, sans-serif;
+  color: #1f2937;
+}
+
+h2[mat-dialog-title] {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: #111827;
+}
+
+mat-dialog-content {
+  font-size: 0.95rem;
+  color: #374151;
+  padding-bottom: 1rem;
+}
+
+mat-dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
+
+button[mat-button] {
+  font-size: 0.85rem;
+  padding: 0.4rem 1rem;
+  border-radius: 0.5rem;
+  text-transform: none;
+  background-color: #f3f4f6;
+  color: #111827;
+  transition: background 0.2s;
+}
+
+button[mat-button]:hover {
+  background-color: #e5e7eb;
+}
+
+button[color="warn"] {
+  background-color: #ef4444;
+  color: white;
+}
+
+button[color="warn"]:hover {
+  background-color: #dc2626;
+}

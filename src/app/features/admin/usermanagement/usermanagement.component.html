@@ -1,3 +1,92 @@
-<div class ='Management'>
-    
+<app-loader></app-loader>
+
+<div class="header-container">
+  <button mat-button class="btn-refresh" (click)="refreshPage()">
+    Refresh
+  </button>
+</div>
+
+<div class="wrapper" [ngClass]="{ 'sidebar-open': isSidebarOpen }">
+  <div class="dashboard-container">
+    <button mat-raised-button class="btn-adduser" (click)="openAddUserModal()">
+      Add User
+    </button>
+    <div class="stats-container"></div>
+  </div>
+
+  <div class="parent-container">
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>Employee</th>
+            <th>Email</th>
+            <th>Role</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let user of requests">
+            <td>{{ user.name }}</td>
+            <td>{{ user.email }}</td>
+            <td>{{ user.role }}</td>
+            <td>
+              <button
+                class="btn-edit"
+                mat-button
+                (click)="openEditUserModal(user)"
+              >
+                Edit
+              </button>
+              <button
+                class="btn-view"
+                mat-button
+                (click)="openDisableModal(user)"
+                [disabled]="user.visibilityStatus === 'Enabled'"
+              >
+                Disable
+              </button>
+              <button
+                class="btn-view"
+                mat-button
+                (click)="openEnableModal(user)"
+                [disabled]="user.visibilityStatus === 'disabled'"
+              >
+                Enable
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="pagination-controls">
+        <button mat-button (click)="prevPage()" [disabled]="pageIndex === 0">
+          Previous
+        </button>
+        <span>Page {{ pageIndex + 1 }} of {{ totalPages() }}</span>
+        <button
+          mat-button
+          (click)="nextPage()"
+          [disabled]="pageIndex >= totalPages() - 1"
+        >
+          Next
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <app-add-user-modal
+    *ngIf="isModalOpen"
+    (closeModal)="isModalOpen = false"
+    [ngClass]="{ show: isModalOpen }"
+    (userAdded)="handleUserUpdated($event)"
+  ></app-add-user-modal>
+
+  <!-- Edit User Modal -->
+  <app-edit-user-modal
+    *ngIf="isEditUserModalOpen"
+    [user]="selectedUser"
+    (closeModal)="openEditUserModal(selectedUser)"
+    (userUpdated)="handleUserUpdated($event)"
+  ></app-edit-user-modal>
 </div>

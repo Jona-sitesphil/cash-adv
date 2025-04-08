@@ -15,7 +15,7 @@ export class FeaturesService {
   getDashboardStats() {
     throw new Error('Method not implemented.');
   }
-  private baseUrl = 'http://10.0.0.9:5249';
+  private baseUrl = 'http://10.0.0.4:5249';
 
   constructor(private http: HttpClient, private router: Router) {}
 
@@ -58,7 +58,7 @@ export class FeaturesService {
       next: () => {
         sessionStorage.removeItem('auth_token');
         sessionStorage.removeItem('refresh_token');
-       this.router.navigate(['/login']);
+        this.router.navigate(['/login']);
       },
       error: (error) => console.error('Logout failed:', error),
     });
@@ -240,9 +240,7 @@ export class FeaturesService {
     }
     return throwError(() => new Error(errorMessage));
   }
-  // Fetch the uploaded receipt image using its file path.
   getUploadedReceipt(imageFilePath: string): Observable<any> {
-    // Construct the URL to retrieve the image.
     const url = `${this.baseUrl}/api/File/Image/${imageFilePath}`;
     return this.http
       .get(url, {
@@ -253,5 +251,50 @@ export class FeaturesService {
         map((blob) => URL.createObjectURL(blob)),
         catchError(this.handleError)
       );
+  }
+  getUserManagementStats(): Observable<any> {
+    return this.http
+      .get<any>(`${this.baseUrl}/api/User/cash-advance?page=1&pageSize=10`, {
+        headers: this.getHeaders(),
+      })
+      .pipe(retry(3), catchError(this.handleError));
+  }
+
+  getUserDetails(page: number, pageSize: number): Observable<any> {
+    return this.http
+      .get<any>(
+        `${this.baseUrl}/api/User/cash-advance?page=${page}&pageSize=${pageSize}`,
+        { headers: this.getHeaders() }
+      )
+      .pipe(retry(3), catchError(this.handleError));
+  }
+
+  // private handleError(error: HttpErrorResponse) {
+  //   let errorMessage = 'An unknown error occurred!';
+  //   if (error.error instanceof ErrorEvent) {
+  //     errorMessage = `Error: ${error.error.message}`;
+  //   } else {
+  //     errorMessage = `Server Error: ${error.status} - ${error.message}`;
+  //   }
+  //   return throwError(() => new Error(errorMessage));
+  // }
+  createUser(userData: any): Observable<any> {
+    const url = `${this.baseUrl}/api/Auth/cash-advance/add-user`;
+    return this.http
+      .post<any>(url, userData, { headers: this.getHeaders() })
+      .pipe(catchError(this.handleError));
+  }
+  updateUser(id: number, userData: any): Observable<any> {
+    const url = `${this.baseUrl}/api/user/${id}`; // Update URL according to your API's endpoint.
+    return this.http
+      .put<any>(url, userData, { headers: this.getHeaders() })
+      .pipe(catchError(this.handleError));
+  }
+  disableUser(userId: string): Observable<any> {
+    return this.http.put(`${this.baseUrl}/api/user/disable/${userId}`, {}); // adjust API and method as needed
+  }
+
+  enableUser(userId: number) {
+    return this.http.put(`${this.baseUrl}/api/user/enable/${userId}`, {});
   }
 }

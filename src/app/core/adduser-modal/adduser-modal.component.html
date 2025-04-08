@@ -1,0 +1,90 @@
+<form [formGroup]="userForm" (ngSubmit)="addUser()">
+  <h2>Add New User</h2>
+
+  <!-- Name Field -->
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Name</mat-label>
+    <input matInput formControlName="name" />
+    <mat-error *ngIf="userForm.get('name')?.hasError('required')">
+      Name is required
+    </mat-error>
+  </mat-form-field>
+
+  <!-- Email Field -->
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Email</mat-label>
+    <input matInput formControlName="email" />
+    <mat-error *ngIf="userForm.get('email')?.hasError('required')">
+      Email is required
+    </mat-error>
+    <mat-error *ngIf="userForm.get('email')?.hasError('pattern')">
+      Please enter a valid email (e.g., user&#64;domain.com)
+    </mat-error>
+  </mat-form-field>
+
+  <!-- Password Field -->
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Password</mat-label>
+    <input matInput type="password" formControlName="password" />
+    <mat-error *ngIf="userForm.get('password')?.hasError('required')">
+      Password is required
+    </mat-error>
+    <mat-error *ngIf="userForm.get('password')?.hasError('minlength')">
+      Password must be at least 8 characters long
+    </mat-error>
+  </mat-form-field>
+
+  <!-- Confirm Password Field -->
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Confirm Password</mat-label>
+    <input matInput type="password" formControlName="confirmPassword" />
+    <mat-error *ngIf="userForm.get('confirmPassword')?.hasError('required')">
+      Confirm Password is required
+    </mat-error>
+    <mat-error *ngIf="userForm.get('confirmPassword')?.hasError('mismatch')">
+      Passwords do not match
+    </mat-error>
+  </mat-form-field>
+
+  <!-- Phone Number Field -->
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Phone Number</mat-label>
+    <input
+      type="number"
+      matInput
+      formControlName="phone"
+      (input)="onPhoneInput($event)"
+      maxlength="11"
+    />
+    <mat-error *ngIf="userForm.get('phone')?.hasError('required')">
+      Phone Number is required
+    </mat-error>
+    <mat-error *ngIf="userForm.get('phone')?.hasError('pattern')">
+      Phone Number must be exactly 11 digits and contain only numbers
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Role</mat-label>
+    <mat-select formControlName="role">
+      <mat-option value="Employee">Employee</mat-option>
+      <mat-option value="Admin">Admin</mat-option>
+    </mat-select>
+    <mat-error *ngIf="userForm.get('role')?.hasError('required')">
+      Role is required
+    </mat-error>
+  </mat-form-field>
+
+  <!-- Modal Actions -->
+  <div class="modal-actions" *ngIf="userForm.get('role')?.valid">
+    <button mat-button type="button" (click)="close()">Cancel</button>
+    <button
+      mat-raised-button
+      color="primary"
+      type="submit"
+      [disabled]="userForm.invalid"
+    >
+      Add User
+    </button>
+  </div>
+</form>

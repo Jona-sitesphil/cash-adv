@@ -1,0 +1,171 @@
+:host {
+  display: block;
+  width: 100%;
+  max-width: 480px;
+  background-color: #fff;
+  border: 1px solid #e5e7eb; /* Soft border */
+  border-radius: 1rem; /* 2xl rounded */
+  padding: 24px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1000;
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.25s ease-in-out, visibility 0.25s ease-in-out;
+}
+
+:host(.show) {
+  visibility: visible;
+  opacity: 1;
+}
+
+h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #111827;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+mat-form-field {
+  width: 100%;
+  margin-bottom: 1rem;
+  background-color: #f9fafb;
+  border-radius: 0.75rem;
+  padding-inline: 0.5rem;
+}
+
+mat-label {
+  color: #374151;
+  font-weight: 500;
+}
+
+input,
+mat-select {
+  font-size: 0.875rem;
+  color: #111827;
+}
+
+mat-error {
+  color: #ef4444;
+  font-size: 0.75rem;
+  margin-top: 4px;
+  display: block;
+}
+
+/* Modal Buttons */
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  margin-top: 1.25rem;
+}
+
+button {
+  border-radius: 0.5rem;
+  padding: 0.5rem 1.25rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: background-color 0.2s, border 0.2s;
+}
+
+/* Cancel Button (outlined) */
+button[mat-button] {
+  color: #374151;
+  background-color: #f9fafb;
+  border: 1px solid #d1d5db;
+}
+
+button[mat-button]:hover {
+  background-color: #f3f4f6;
+}
+
+/* Add Button (primary) */
+button[mat-raised-button] {
+  background-color: #111827;
+  color: #fff;
+  border: none;
+}
+
+button[mat-raised-button]:hover {
+  background-color: #1f2937;
+}
+
+/* Optional: Responsive for mobile */
+@media (max-width: 480px) {
+  :host {
+    width: 90%;
+    padding: 16px;
+  }
+
+  h2 {
+    font-size: 1.25rem;
+  }
+
+  .modal-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  button {
+    width: 100%;
+  }
+  /* Phone Number Field Style */
+  mat-form-field {
+    display: block;
+    width: 100%;
+    margin-bottom: 1.25rem; /* Spacing between fields */
+  }
+
+  mat-label {
+    font-size: 14px;
+    color: #333; /* Dark text color */
+  }
+
+  mat-input-element {
+    padding: 10px;
+    background-color: #f9fafb;
+    border-radius: 0.5rem;
+    font-size: 14px;
+    color: #333;
+    width: 100%;
+  }
+
+  mat-input-element:focus {
+    border-color: #4caf50; /* Green border on focus */
+  }
+
+  .mat-form-field-appearance-outline .mat-form-field-outline {
+    background-color: #f9fafb;
+    border-radius: 0.5rem;
+    border: 1px solid #ccc;
+  }
+
+  .mat-form-field-appearance-outline .mat-form-field-outline:hover {
+    border-color: #4caf50; /* Green on hover */
+  }
+
+  /* Error Messages */
+  mat-error {
+    color: #d32f2f; /* Red color for error messages */
+    font-size: 0.75rem;
+    margin-top: 0.25rem;
+    display: block;
+  }
+
+  mat-error:first-of-type {
+    margin-top: 0.5rem; /* Space between error messages */
+  }
+
+  /* Input Field Focus and Error States */
+  input.mat-input-element.ng-invalid.ng-touched {
+    border-color: #d32f2f; /* Red border when invalid */
+  }
+
+  input.mat-input-element.ng-valid.ng-touched {
+    border-color: #4caf50; /* Green border when valid */
+  }
+}

@@ -57,6 +57,7 @@ export class EmployeedComponent implements OnInit {
     this.featuresService.getSelfRequests().subscribe({
       next: (response: any) => {
         this.requests = response.data.cashAdvanceRequests;
+        
       },
       error: (err: any) => console.error('Error loading requests:', err),
     });
@@ -64,4 +65,5 @@ export class EmployeedComponent implements OnInit {
   refreshPage(): void {
     window.location.reload();
   }
+   
 }
