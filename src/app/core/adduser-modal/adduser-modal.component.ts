@@ -12,6 +12,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { FeaturesService } from './../../features/features.service';
+import { MatIcon } from '@angular/material/icon';
 
 export function confirmPasswordValidator(control: AbstractControl) {
   const password = control.get('password')?.value;
@@ -38,6 +39,7 @@ export function confirmPasswordValidator(control: AbstractControl) {
     MatInputModule,
     MatButtonModule,
     MatError,
+    MatIcon,
   ],
 })
 export class AddUserModalComponent {

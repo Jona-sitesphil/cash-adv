@@ -25,12 +25,10 @@ export class DisableComponent {
     @Inject(MAT_DIALOG_DATA) public data: ConfirmDialogData
   ) {}
 
-  /** User clicked “Cancel” */
   onCancel(): void {
     this.dialogRef.close(false);
   }
 
-  /** User clicked “Disable” */
   onConfirm(): void {
     this.dialogRef.close(true);
   }

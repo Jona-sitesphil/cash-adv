@@ -1,5 +1,5 @@
 <app-loader />
-<h1>Request History</h1>
+<!-- <h1>Request History</h1>
 <button mat-button class="btn-refresh" (click)="refreshPage()">Refresh</button>
 <div class="wrapper" [ngClass]="{ 'sidebar-open': isSidebarOpen }">
   <div class="filter-container">
@@ -32,55 +32,55 @@
           <option value="Rejected">Rejected</option>
         </select>
       </div>
-    </div>
-  </div>
+    </div> -->
+<!-- </div> -->
 
-  <!-- Table Section -->
-  <div class="parent-container">
-    <div class="table-container">
-      <table>
-        <thead>
-          <tr>
-            <th>Employee</th>
-            <th>Request Date</th>
-            <th>Date Needed</th>
-            <th>Amount</th>
-            <th>Status</th>
-            <th>Decision Date</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let item of filteredRequests">
-            <td>{{ item.userName }}</td>
-            <td>{{ item.requestDate | date : "medium" }}</td>
-            <td>{{ item.neededDate | date : "mediumDate" }}</td>
-            <td>{{ item.amount | currency : "PHP" : "symbol" }}</td>
-            <td>{{ item.requestStatus }}</td>
-            <td>{{ item.updatedAt | date : "medium" }}</td>
-            <td>
-              <button class="btn" mat-button (click)="openHistoryView(item)">
-                View Details
-              </button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-  <!-- Pagination Controls -->
-
-  <div class="pagination-controls">
-    <button mat-button (click)="prevPage()" [disabled]="pageIndex === 0">
-      Previous
-    </button>
-    <span>Page {{ pageIndex + 1 }} of {{ totalPages() }}</span>
-    <button
-      mat-button
-      (click)="nextPage()"
-      [disabled]="pageIndex >= totalPages() - 1"
-    >
-      Next
-    </button>
+<!-- Table Section -->
+<div class="parent-container">
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>Employee</th>
+          <th>Request Date</th>
+          <th>Date Needed</th>
+          <th>Amount</th>
+          <th>Status</th>
+          <th>Decision Date</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of filteredRequests">
+          <td>{{ item.userName }}</td>
+          <td>{{ item.requestDate | date : "medium" }}</td>
+          <td>{{ item.neededDate | date : "mediumDate" }}</td>
+          <td>{{ item.amount | currency : "PHP" : "symbol" }}</td>
+          <td>{{ item.requestStatus }}</td>
+          <td>{{ item.updatedAt | date : "medium" }}</td>
+          <td>
+            <button class="btn" mat-button (click)="openHistoryView(item)">
+              View Details
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 </div>
+<!-- Pagination Controls -->
+
+<div class="pagination-controls">
+  <button mat-button (click)="prevPage()" [disabled]="pageIndex === 0">
+    Previous
+  </button>
+  <span>Page {{ pageIndex + 1 }} of {{ totalPages() }}</span>
+  <button
+    mat-button
+    (click)="nextPage()"
+    [disabled]="pageIndex >= totalPages() - 1"
+  >
+    Next
+  </button>
+</div>
+<!-- </div> -->

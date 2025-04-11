@@ -68,13 +68,13 @@ export class DetailsempComponent {
     };
     this.http
       .put(
-        `http://10.0.0.27:5249/api/CashAdvanceRequest/Upload-Receipt/${payment.id}`,
+        `http://10.0.0.13:5249/api/CashAdvanceRequest/Upload-Receipt/${payment.id}`,
         formData,
         { headers } // Attach the headers
       )
       .subscribe({
         next: () => {
-          alert(`Receipt uploaded successfully for ${payment.paymentDate}!`);
+          ~alert(`Receipt uploaded successfully for ${payment.paymentDate}!`);
           payment.selectedFile = null;
           payment.selectedFileName = '';
         },

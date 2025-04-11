@@ -56,7 +56,6 @@ mat-error {
   display: block;
 }
 
-/* Modal Buttons */
 .modal-actions {
   display: flex;
   justify-content: flex-end;
@@ -72,7 +71,6 @@ button {
   transition: background-color 0.2s, border 0.2s;
 }
 
-/* Cancel Button (outlined) */
 button[mat-button] {
   color: #374151;
   background-color: #f9fafb;
@@ -83,7 +81,6 @@ button[mat-button]:hover {
   background-color: #f3f4f6;
 }
 
-/* Add Button (primary) */
 button[mat-raised-button] {
   background-color: #111827;
   color: #fff;
@@ -94,7 +91,6 @@ button[mat-raised-button]:hover {
   background-color: #1f2937;
 }
 
-/* Optional: Responsive for mobile */
 @media (max-width: 480px) {
   :host {
     width: 90%;
@@ -113,11 +109,10 @@ button[mat-raised-button]:hover {
   button {
     width: 100%;
   }
-  /* Phone Number Field Style */
   mat-form-field {
     display: block;
     width: 100%;
-    margin-bottom: 1.25rem; /* Spacing between fields */
+    margin-bottom: 1.25rem;
   }
 
   mat-label {
@@ -135,7 +130,7 @@ button[mat-raised-button]:hover {
   }
 
   mat-input-element:focus {
-    border-color: #4caf50; /* Green border on focus */
+    border-color: #4caf50;
   }
 
   .mat-form-field-appearance-outline .mat-form-field-outline {
@@ -145,27 +140,45 @@ button[mat-raised-button]:hover {
   }
 
   .mat-form-field-appearance-outline .mat-form-field-outline:hover {
-    border-color: #4caf50; /* Green on hover */
+    border-color: #4caf50;
   }
 
-  /* Error Messages */
   mat-error {
-    color: #d32f2f; /* Red color for error messages */
+    color: #d32f2f;
     font-size: 0.75rem;
     margin-top: 0.25rem;
     display: block;
   }
 
   mat-error:first-of-type {
-    margin-top: 0.5rem; /* Space between error messages */
+    margin-top: 0.5rem;
   }
 
-  /* Input Field Focus and Error States */
   input.mat-input-element.ng-invalid.ng-touched {
-    border-color: #d32f2f; /* Red border when invalid */
+    border-color: #d32f2f;
   }
 
   input.mat-input-element.ng-valid.ng-touched {
-    border-color: #4caf50; /* Green border when valid */
+    border-color: #4caf50;
+  }
+  /* Style the close icon */
+  .close-icon {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    cursor: pointer;
+    color: #555;
+    transition: color 0.2s ease, transform 0.2s ease;
+  }
+
+  /* Style the icon itself */
+  .close-icon mat-icon {
+    font-size: 24px;
+  }
+
+  /* Hover effect */
+  .close-icon:hover {
+    color: #d32f2f; /* red shade for hover */
+    transform: scale(1.1);
   }
 }

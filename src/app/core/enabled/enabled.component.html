@@ -6,5 +6,7 @@
 
 <mat-dialog-actions align="end">
   <button mat-button (click)="onCancel()">Cancel</button>
-  <button mat-raised-button color="warn" (click)="onConfirm()">Enable</button>
+  <button mat-raised-button color="warn" (click)="onConfirm()">
+    {{ data.buttonLabel || 'Enable' }}
+  </button>
 </mat-dialog-actions>

@@ -41,6 +41,9 @@ button[mat-button]:hover {
 button[color="warn"] {
   background-color: #ef4444;
   color: white;
+  font-size: 0.85rem;
+  padding: 0.4rem 1rem;
+  border-radius: 0.5rem;
 }
 
 button[color="warn"]:hover {

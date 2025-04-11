@@ -1,4 +1,7 @@
 <form [formGroup]="userForm" (ngSubmit)="addUser()">
+  <div class="close-icon" (click)="close()">
+    <mat-icon>close</mat-icon>
+  </div>
   <h2>Add New User</h2>
 
   <!-- Name Field -->

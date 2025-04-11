@@ -11,6 +11,7 @@ import { AddUserModalComponent } from '../../../core/adduser-modal/adduser-modal
 import { EditUserModalComponent } from '../../../editusermodal/editusermodal.component';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { DisableComponent } from '../../../core/disable/disable.component';
+import { EnabledComponent } from '../../../core/enabled/enabled.component';
 @Component({
   selector: 'app-dashboard',
   standalone: true,
@@ -134,35 +135,35 @@ export class UserManagementComponent implements OnInit {
     this.featuresService.enableUser(user.id).subscribe({
       next: () => {
         // After enabling, update the visibilityStatus to 'Enabled'
-        const index = this.requests.findIndex(u => u.id === user.id);
+        const index = this.requests.findIndex((u) => u.id === user.id);
         if (index !== -1) {
-          this.requests[index].visibilityStatus = 'Enabled';  // Mark the status as Enabled
+          this.requests[index].visibilityStatus = 'Enabled'; // Mark the status as Enabled
         }
         console.log(`User ${user.name} enabled successfully.`);
-        this.refreshPage();  // Refresh the list to reflect the change
+        this.refreshPage(); // Refresh the list to reflect the change
       },
       error: (err: any) => {
         console.error('Failed to enable user:', err);
       },
     });
   }
-  
+
   openEnableModal(user: any): void {
-    const dialogRef = this.dialog.open(DisableComponent, {
+    const dialogRef = this.dialog.open(EnabledComponent, {
       width: '400px',
       data: {
         title: 'Enable User',
         message: `Are you sure you want to enable ${user.name}?`,
       },
     });
-  
+
     dialogRef.afterClosed().subscribe((confirmed) => {
       if (confirmed) {
-        this.enableUser(user);  // Call the enableUser method
+        this.enableUser(user); // Call the enableUser method
       }
     });
   }
-  
+
   openDisableModal(user: any): void {
     const dialogRef = this.dialog.open(DisableComponent, {
       width: '400px',
@@ -171,31 +172,30 @@ export class UserManagementComponent implements OnInit {
         message: `Are you sure you want to disable ${user.name}?`,
       },
     });
-  
+
     dialogRef.afterClosed().subscribe((confirmed) => {
       if (confirmed) {
-        this.disableUser(user);  // Call the disableUser method
+        this.disableUser(user); // Call the disableUser method
       }
     });
   }
-  
+
   disableUser(user: any): void {
     this.featuresService.disableUser(user.id).subscribe({
       next: () => {
         // After disabling, update the visibilityStatus to 'Disabled'
-        const index = this.requests.findIndex(u => u.id === user.id);
+        const index = this.requests.findIndex((u) => u.id === user.id);
         if (index !== -1) {
-          this.requests[index].visibilityStatus = 'Disabled';  // Mark the status as Disabled
+          this.requests[index].visibilityStatus = 'Disabled'; // Mark the status as Disabled
         }
         console.log(`User ${user.name} disabled successfully.`);
-        this.refreshPage();  // Refresh the list to reflect the change
+        this.refreshPage(); // Refresh the list to reflect the change
       },
       error: (err: any) => {
         console.error('Failed to disable user:', err);
       },
     });
   }
-  
 
   // enableUser(user: any): void {
   //   this.featuresService.enableUser(user.id).subscribe({

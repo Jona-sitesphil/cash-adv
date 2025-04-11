@@ -38,41 +38,45 @@
               >
                 Edit
               </button>
-              <button
-                class="btn-view"
-                mat-button
-                (click)="openDisableModal(user)"
-                [disabled]="user.visibilityStatus === 'Enabled'"
-              >
-                Disable
-              </button>
-              <button
-                class="btn-view"
-                mat-button
-                (click)="openEnableModal(user)"
-                [disabled]="user.visibilityStatus === 'disabled'"
-              >
-                Enable
-              </button>
+              <ng-container *ngIf="user.visibilityStatus === 'Enabled'">
+                <button
+                  class="btn-view"
+                  mat-button
+                  (click)="openDisableModal(user)"
+                >
+                  Disable
+                </button>
+              </ng-container>
+
+              <!-- Enable Button: shows only if visibilityStatus is 'Disabled' -->
+              <ng-container *ngIf="user.visibilityStatus === 'Disabled'">
+                <button
+                  class="btn-view"
+                  mat-button
+                  (click)="openEnableModal(user)"
+                >
+                  Enable
+                </button>
+              </ng-container>
             </td>
           </tr>
         </tbody>
       </table>
-
-      <div class="pagination-controls">
-        <button mat-button (click)="prevPage()" [disabled]="pageIndex === 0">
-          Previous
-        </button>
-        <span>Page {{ pageIndex + 1 }} of {{ totalPages() }}</span>
-        <button
-          mat-button
-          (click)="nextPage()"
-          [disabled]="pageIndex >= totalPages() - 1"
-        >
-          Next
-        </button>
-      </div>
     </div>
+  </div>
+
+  <div class="pagination-controls">
+    <button mat-button (click)="prevPage()" [disabled]="pageIndex === 0">
+      Previous
+    </button>
+    <span>Page {{ pageIndex + 1 }} of {{ totalPages() }}</span>
+    <button
+      mat-button
+      (click)="nextPage()"
+      [disabled]="pageIndex >= totalPages() - 1"
+    >
+      Next
+    </button>
   </div>
 
   <app-add-user-modal
@@ -82,11 +86,10 @@
     (userAdded)="handleUserUpdated($event)"
   ></app-add-user-modal>
 
-  <!-- Edit User Modal -->
   <app-edit-user-modal
     *ngIf="isEditUserModalOpen"
     [user]="selectedUser"
-    (closeModal)="openEditUserModal(selectedUser)"
+    (closeModal)="isEditUserModalOpen = false"
     (userUpdated)="handleUserUpdated($event)"
   ></app-edit-user-modal>
 </div>

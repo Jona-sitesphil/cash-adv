@@ -15,7 +15,7 @@ export class FeaturesService {
   getDashboardStats() {
     throw new Error('Method not implemented.');
   }
-  private baseUrl = 'http://10.0.0.27:5249';
+  private baseUrl = 'http://10.0.0.13:5249';
 
   constructor(private http: HttpClient, private router: Router) {}
 
@@ -70,6 +70,10 @@ export class FeaturesService {
   // - data.totalCount: total number of records.
   // - data.totalPages: total pages.
   // - data.currentPage: the current (1-based) page.
+
+  startDate: string = '2025-03-01';
+  endDate: string = '2025-04-01';
+
   getRequestsPaginated(page: number, pageSize: number): Observable<any> {
     return this.http
       .get<any>(

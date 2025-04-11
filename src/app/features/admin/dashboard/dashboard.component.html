@@ -3,7 +3,7 @@
 <button mat-button class="btn-refresh" (click)="refreshPage()">Refresh</button>
 
 <div class="wrapper" [ngClass]="{ 'sidebar-open': isSidebarOpen }">
-  <div class="dashboard-container"> 
+  <div class="dashboard-container">
     <div class="card-container">
       <div class="stats-container">
         <div class="stats-box">
@@ -77,20 +77,6 @@
             </tr>
           </tbody>
         </table>
-
-        <div class="pagination-controls">
-          <button mat-button (click)="prevPage()" [disabled]="pageIndex === 0">
-            Previous
-          </button>
-          <span>Page {{ pageIndex + 1 }} of {{ totalPages() }}</span>
-          <button
-            mat-button
-            (click)="nextPage()"
-            [disabled]="pageIndex >= totalPages() - 1"
-          >
-            Next
-          </button>
-        </div>
       </div>
 
       <!-- Approve Modal -->
@@ -118,5 +104,18 @@
         (closeModalEvent)="closeViewDetailsModal()"
       ></app-payment-schedule>
     </div>
+  </div>
+  <div class="pagination-controls">
+    <button mat-button (click)="prevPage()" [disabled]="pageIndex === 0">
+      Previous
+    </button>
+    <span>Page {{ pageIndex + 1 }} of {{ totalPages() }}</span>
+    <button
+      mat-button
+      (click)="nextPage()"
+      [disabled]="pageIndex >= totalPages() - 1"
+    >
+      Next
+    </button>
   </div>
 </div>

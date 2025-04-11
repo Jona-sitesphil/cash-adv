@@ -9,6 +9,7 @@ import {
 export interface ConfirmDialogData {
   title: string;
   message: string;
+  buttonLabel?: string; // Optional field for dynamic button text
 }
 
 @Component({

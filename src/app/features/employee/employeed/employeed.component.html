@@ -29,8 +29,8 @@
       <p>{{ request.reason }}</p>
       <small>
         Amount: ₱{{ request.amount | number : "1.2-2" }} | Needed:
-        {{ request.neededDate | date : "mediumDate" }} | Requested:
-        {{ request.requestDate | date : "medium" }}
+        {{ request.neededDate | date : "MMM d, y" }} | Requested:
+        {{ request.requestDate | date : "MMM d, y" }}
       </small>
       <button
         mat-stroked-button
@@ -42,7 +42,6 @@
       </button>
     </div>
   </div>
-  
 </div>
 
 <!-- Employee Modal Component -->
