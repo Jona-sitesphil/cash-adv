@@ -12,7 +12,6 @@
     [opened]="!isMobile"
     class="sidenav"
   >
-    <!-- Sidebar Logo -->
     <div class="image-wrapper">
       <div class="sidebar-logo">
         <img
@@ -24,7 +23,7 @@
     </div>
 
     <mat-nav-list class="sidenav-list">
-      <a mat-list-item routerLink="/employee/dashboard"
+      <a mat-list-item routerLink="/supervisor/dashboard"
         ><mat-icon>home</mat-icon> <strong>Dashboard</strong></a
       >
 
@@ -35,7 +34,7 @@
   </mat-sidenav>
 
   <mat-sidenav-content class="content">
-    <router-outlet />
+    <router-outlet></router-outlet>
   </mat-sidenav-content>
 </mat-sidenav-container>
 

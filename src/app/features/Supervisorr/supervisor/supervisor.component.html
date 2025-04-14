@@ -1,0 +1,121 @@
+<app-loader />
+
+<button mat-button class="btn-refresh" (click)="refreshPage()">Refresh</button>
+
+<div class="wrapper" [ngClass]="{ 'sidebar-open': isSidebarOpen }">
+  <!-- <div class="dashboard-container">
+    <div class="card-container">
+      <div class="stats-container">
+        <div class="stats-box">
+          <p class="stats-number">{{ allCount }}</p>
+          <p>Total Request</p>
+        </div>
+      </div>
+      <div class="stats-container">
+        <div class="stats-box">
+          <p class="stats-number">{{ pendingCount }}</p>
+          <p>Pending Request</p>
+        </div>
+      </div>
+      <div class="stats-container">
+        <div class="stats-box">
+          <p class="stats-number">{{ approvedThisMonth }}</p>
+          <p>Approved This Month</p>
+        </div>
+      </div>
+    </div>
+  </div> -->
+  <div>
+    <div class="parent-container">
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Employee</th>
+              <th>Request Date</th>
+              <th>Date Needed</th>
+              <th>Amount</th>
+              <th>Purpose</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of requests">
+              <td>{{ item.userName }}</td>
+              <td>{{ item.requestDate | date : "medium" }}</td>
+              <td>{{ item.neededDate | date : "mediumDate" }}</td>
+              <td>{{ item.amount | currency : "PHP" : "symbol" }}</td>
+              <td>{{ item.reason }}</td>
+              <td>{{ item.requestStatus }}</td>
+
+              <td>
+                <button
+                  class="btn-approve"
+                  mat-button
+                  (click)="openApproveModal(item)"
+                  *ngIf="item.requestStatus === 'Pending'"
+                >
+                  Approve
+                </button>
+                <button
+                  class="btn-reject"
+                  mat-button
+                  (click)="openRejectModal(item)"
+                  *ngIf="item.requestStatus === 'Pending'"
+                >
+                  Reject
+                </button>
+                <button
+                  class="btn-details"
+                  mat-button
+                  (click)="openViewDetailsModal(item)"
+                >
+                  View Details
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Approve Modal -->
+      <app-approve-modal
+        *ngIf="isApproveModalOpen"
+        [showModal]="isApproveModalOpen"
+        [paymentSchedule]="selectedPaymentSchedule"
+        (modalClosed)="closeApproveModal()"
+        (approvalConfirmed)="handleApproval()"
+      ></app-approve-modal>
+
+      <!-- Reject Modal -->
+      <app-reject-request-modal
+        *ngIf="isRejectModalOpen"
+        [paymentSchedule]="selectedPaymentSchedule"
+        (modalClosed)="closeRejectModal()"
+        (rejectionConfirmed)="handleRejection($event)"
+      ></app-reject-request-modal>
+
+      <!-- Payment Schedule Modal -->
+      <app-payment-schedule
+        *ngIf="isViewDetailsModalOpen"
+        (receiptUploadSuccess)="onReceiptUploadSuccess()"
+        [paymentSchedule]="selectedPaymentSchedule"
+        (closeModalEvent)="closeViewDetailsModal()"
+      ></app-payment-schedule>
+    </div>
+  </div>
+  <div class="pagination-controls">
+    <button mat-button (click)="prevPage()" [disabled]="pageIndex === 0">
+      Previous
+    </button>
+    <span>Page {{ pageIndex + 1 }} of {{ totalPages() }}</span>
+    <button
+      mat-button
+      (click)="nextPage()"
+      [disabled]="pageIndex >= totalPages() - 1"
+    >
+      Next
+    </button>
+  </div>
+</div>

@@ -128,7 +128,7 @@ export class PaymentScheduleComponent implements OnChanges {
 
     this.http
       .put(
-        `http://10.0.0.13:5249/api/CashAdvanceRequest/Upload-Receipt/${payment.id}`,
+        `http://10.0.0.18:5249/api/CashAdvanceRequest/Upload-Receipt/${payment.id}`,
         formData,
         { headers }
       )

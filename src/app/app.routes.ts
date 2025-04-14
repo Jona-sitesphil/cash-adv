@@ -7,6 +7,8 @@ import { EmployeeLayoutComponent } from './core/employee-layout/employee-layout.
 import { EmployeedComponent } from './features/employee/employeed/employeed.component';
 import { authGuard } from './auth.guard';
 import { UserManagementComponent } from './features/admin/usermanagement/usermanagement.component';
+import { SupervisorLayoutComponent } from './core/supervisor-layout/supervisor-layout.component';
+import { SupervisorComponent } from './features/Supervisorr/supervisor/supervisor.component';
 export const routes: Routes = [
   {
     path: '',
@@ -45,6 +47,18 @@ export const routes: Routes = [
       {
         path: 'dashboard',
         component: EmployeedComponent,
+        canActivate: [authGuard],
+      },
+    ],
+  },
+  {
+    path: 'supervisor',
+    component: SupervisorLayoutComponent,
+    canActivate: [authGuard],
+    children: [
+      {
+        path: 'dashboard',
+        component: SupervisorComponent,
         canActivate: [authGuard],
       },
     ],

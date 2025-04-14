@@ -41,8 +41,8 @@ export class LoginComponent {
             this.router.navigate(['/main/dashboard']);
           } else if (userRole === 'Employee') {
             this.router.navigate(['/employee/dashboard']);
-          } else {
-            this.router.navigate(['/']);
+          } else if (userRole === 'Supervisor') {
+            this.router.navigate(['/supervisor/dashboard']);
           }
         });
       },
